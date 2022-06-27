@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { getBookmarks } from './library';
-  import type { Bookmark } from './types';
+  import { getBookmarks } from './library/library';
+  import type { Bookmark } from './library/types';
 
   let bookmarks: Bookmark[] = [];
 
@@ -13,15 +13,6 @@
 
 <main>
   <h1>You have entered the <i>Divine Library</i></h1>
-  <div>
-    {#if bookmarks.length > 0}
-      {#each bookmarks as bookmark }
-        <div><pre>
-          {JSON.stringify(bookmark, null, 4)}
-        </pre></div>
-      {/each}
-    {/if}
-  </div>
 </main>
 
 <style>
