@@ -1,13 +1,8 @@
-export type Output = {
-    title: string,
-    message: string
-};
-
-type Source = {
+export type Source = {
     website: string;
     page: string;
     format: string;
-    pad: string;
+    pad: number;
 };
 
 export type Bookmark = {
@@ -15,4 +10,11 @@ export type Bookmark = {
     title: string;
     chapter: number;
     url: Source;
+    imgUrl: string;
+};
+
+export type NewChapter = {
+    _id: string;
+    bookmark_id: string;
+    chapter: number;
 };

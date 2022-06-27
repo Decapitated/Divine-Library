@@ -1,25 +1,5 @@
 import db from './database.js';
-
-type Source = {
-    website: string;
-    page: string;
-    format: string;
-    pad: number;
-};
-
-export type Bookmark = {
-    _id: string;
-    title: string;
-    chapter: number;
-    url: Source;
-    imgUrl: string;
-};
-
-type NewChapter = {
-    _id: string;
-    bookmark_id: string;
-    chapter: number;
-};
+import type { Bookmark, NewChapter } from './types';
 
 // Gets all the bookmarks.
 export function getBookmarks(): Promise<Bookmark[]> {
@@ -29,17 +9,18 @@ export function getBookmarks(): Promise<Bookmark[]> {
         });
     });
 }
-/*
+
 // Adds a new bookmark.
-addBookmark: (bookmark) => {
+export function addBookmark(bookmark: Bookmark): Promise<Bookmark> {
     return new Promise((resolve, reject) => {
         db.bookmarks.insert(bookmark, (e, newBookmark) => {
             e ? reject(e) : resolve(newBookmark);
         });
     });
-},
+}
+
 // Edits a bookmark.
-editBookmark: (id, bookmark) => {
+export function editBookmark(id: string, bookmark: Bookmark): Promise<Bookmark> {
     return new Promise((resolve, reject) => {
         db.bookmarks.update(
             {_id: id},                             // Match id.
@@ -50,9 +31,10 @@ editBookmark: (id, bookmark) => {
             }
         );
     });
-},
+}
+
 // Set the bookmarks current chapter.
-setChapter: (id, chapter) => {
+export function setChapter(id: string, chapter: number): Promise<Bookmark> {
     return new Promise((resolve, reject) => {
         db.bookmarks.update(
             { _id: id },                           // Match id.
@@ -63,8 +45,9 @@ setChapter: (id, chapter) => {
             }
         );
     });
-},
-deleteBookmark: (bookmark_id) => {
+}
+
+export function deleteBookmark(bookmark_id: string): Promise<number> {
     return new Promise((resolve, reject) => {
         db.bookmarks.remove(
             {_id: bookmark_id},  // Match id.
@@ -74,28 +57,32 @@ deleteBookmark: (bookmark_id) => {
             }
         );
     });
-},
+}
+
 // Send url to electron to open browser.
-openUrl: (url) => {
+export function openUrl(url) {
     nw.Shell.openExternal(url);
-},
-getNewChapters: () => {
+}
+
+export function getNewChapters(): Promise<NewChapter[]> {
     return new Promise((resolve, reject) => {
         db.new.find({}, (e, chapters) => {
             e ? reject(e) : resolve(chapters);
         });
     });
-},
+}
+
 // Add a new chapter if one does not exist.
-addNewChapter: (bookmark_id, chapter) => {
+export function addNewChapter(bookmark_id: string, chapter: number): Promise<NewChapter> {
     return new Promise((resolve, reject) => {
         db.new.insert({_id: '', bookmark_id: bookmark_id, chapter: chapter}, (e, newChapter) => {
             e ? reject(e) : resolve(newChapter);
         });
     });
-},
+}
+
 // Update existing chapter.
-updateNewChapter: (bookmark_id, chapter) => {
+export function updateNewChapter(bookmark_id: string, chapter: number): Promise<NewChapter> {
     return new Promise((resolve, reject) => {
         db.new.update(
             {bookmark_id: bookmark_id},           // Match id.
@@ -106,8 +93,9 @@ updateNewChapter: (bookmark_id, chapter) => {
             }
         );
     });
-},
-deleteNewChapter: (bookmark_id) => {
+}
+
+export function deleteNewChapter(bookmark_id: string): Promise<number> {
     return new Promise((resolve, reject) => {
         db.new.remove(
             {bookmark_id: bookmark_id},  // Match id.
@@ -118,4 +106,3 @@ deleteNewChapter: (bookmark_id) => {
         );
     });
 }
-*/

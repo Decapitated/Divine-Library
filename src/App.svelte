@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { Bookmark, getBookmarks } from './library';
+  import { getBookmarks } from './library';
+  import type { Bookmark } from './types';
 
   let bookmarks: Bookmark[] = [];
 
