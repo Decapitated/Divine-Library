@@ -1,9 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { getBookmarks } from './library/library';
-  import type { Bookmark } from './library/types';
+  import type { Bookmark as BookmarkType } from './library/types';
+  import Bookmark from './components/Bookmark.svelte';
 
-  let bookmarks: Bookmark[] = [];
+  let bookmarks: BookmarkType[] = [];
 
   onMount(async () => {
     const results = await getBookmarks();
@@ -12,12 +13,24 @@
 </script>
 
 <main>
-  <h1>You have entered the <i>Divine Library</i></h1>
+  {#if bookmarks.length > 0}
+    <div class="bookmarks">
+      {#each bookmarks as bookmark}
+        <Bookmark bind:bookmark></Bookmark>
+      {/each}
+    </div>
+  {/if}
 </main>
 
 <style>
   :root {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  main > .bookmarks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 </style>

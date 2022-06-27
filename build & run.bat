@@ -1,1 +1,1 @@
-npm run build & nwjs\nw .
+npm run build & start nwjs\nw .
