@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Svelte + TS + Vite App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <pre id="test"></pre>
+    <script type="module" src="/src/main.ts"></script>
+    <!--<script type="module">
+      import library from '/src/js/library.js';
+      const testElem = document.getElementById('test');
+      const win = nw.Window.get();
+      win.title = "Script";
+      library.getBookmarks().then((result) => {
+        testElem.innerText = JSON.stringify(result, null, 4);
+        win.title = "getBookmarks";
+      });
+      console.log(import.meta.url);
+    </script>-->
+  </body>
+</html>
