@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import library from './js/library';
+  import { Bookmark, getBookmarks } from './library';
 
-  let bookmarks = [];
+  let bookmarks: Bookmark[] = [];
 
   onMount(async () => {
-    const results = await library.getBookmarks();
+    const results = await getBookmarks();
     bookmarks = results;
   })
 </script>
