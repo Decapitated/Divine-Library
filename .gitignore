@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 nwjs
+datastores
 
 # Editor directories and files
 .vscode/*
