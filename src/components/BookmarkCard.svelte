@@ -1,11 +1,14 @@
 <script lang="ts">
+    import { createEventDispatcher } from 'svelte';
     import Scroller from './base/Scroller.svelte';
-    import type { Bookmark } from './../library/types';
+    import type { Bookmark } from '../library/types';
 
     export let bookmark: Bookmark;
+
+    const dispatch = createEventDispatcher();
 </script>
 
-<div class="bookmark">
+<div class="bookmark" on:click={() => dispatch('click')}>
     <div class="cover">
         <img alt={bookmark.title} src={bookmark.imgUrl}>
     </div>
