@@ -5,7 +5,12 @@
 const Datastore = require('nedb');
 const dataPath = 'datastores/';
 
-const db = {};
+type Databases = {
+    bookmarks: typeof Datastore;
+    new: typeof Datastore;
+};
+
+const db = {} as Databases;
 // Bookmarks datastore setup
 db.bookmarks = new Datastore({
     filename: dataPath + 'bookmarks.db',

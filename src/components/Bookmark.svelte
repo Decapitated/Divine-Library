@@ -1,13 +1,12 @@
 <script lang="ts">
+    import Image from './base/Image.svelte';
     import type { Bookmark } from './../library/types';
     export let bookmark: Bookmark;
 </script>
 
 <div class="bookmark">
     <div class="cover">
-        <object title={bookmark.title} data="{bookmark.imgUrl}">
-            <object title="Backup Image" data="./assets/svelte.png">
-        </object>
+        <img alt={bookmark.title} src={bookmark.imgUrl}>
     </div>
     <div class="title">{bookmark.title}</div>
 </div>
@@ -25,7 +24,7 @@
         border: 1px solid #b1b1b1;
     }
 
-    .cover object {
+    .cover > img {
         object-fit: cover;
         object-position: 50% 50%;
         height: 100%;

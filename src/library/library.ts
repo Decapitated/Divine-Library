@@ -1,4 +1,4 @@
-import db from './database.js';
+import db from './database';
 import type { Bookmark, NewChapter } from './types';
 
 // Gets all the bookmarks.

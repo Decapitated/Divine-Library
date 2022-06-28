@@ -1,8 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import Bookmark from './components/Bookmark.svelte';
+  import Input from './components/base/Input.svelte';
+
   import { getBookmarks } from './library/library';
   import type { Bookmark as BookmarkType } from './library/types';
-  import Bookmark from './components/Bookmark.svelte';
 
   let bookmarks: BookmarkType[] = [];
 
@@ -13,6 +15,7 @@
 </script>
 
 <main>
+  <Input placeholder="Search"></Input>
   {#if bookmarks.length > 0}
     <div class="bookmarks">
       {#each bookmarks as bookmark}
@@ -26,6 +29,10 @@
   :root {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  main {
+    background-color: white;
   }
 
   main > .bookmarks {
