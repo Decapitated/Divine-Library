@@ -1,6 +1,7 @@
 <script lang="ts">
-    import Image from './base/Image.svelte';
+    import Scroller from './base/Scroller.svelte';
     import type { Bookmark } from './../library/types';
+
     export let bookmark: Bookmark;
 </script>
 
@@ -8,20 +9,28 @@
     <div class="cover">
         <img alt={bookmark.title} src={bookmark.imgUrl}>
     </div>
-    <div class="title">{bookmark.title}</div>
+    <div class="content">
+        <div class="title">
+            <Scroller speed={10} wait={2000}>{bookmark.title}</Scroller>
+        </div>
+    </div>
 </div>
 
 <style>
     .bookmark {
         display: flex;
-        padding: 0.5em;
+        margin: 0.5em;
+        height: 14em;
+        width: 10em;
+        position: relative;
+        box-shadow: 0px 5px 5px -5px black;
     }
 
     .cover {
-        height: 14em;
-        width: 10em;
+        height: 100%;
+        width: 100%;
         border-radius: 5px;
-        border: 1px solid #b1b1b1;
+        overflow: hidden;
     }
 
     .cover > img {
@@ -30,21 +39,34 @@
         height: 100%;
         width: 100%;
         border-radius: inherit;
+        transition: all 0.15s;
     }
 
-    .title, .chapter {
+    .bookmark:hover img {
+        height: 125%;
+    }
+
+    .content {
+        position: absolute;
+        height: 100%;
+        width: 100%;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        overflow: hidden;
+        align-items: flex-end;
+        background: rgb(0,0,0);
+        background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(18,17,17,1) 100%);
+    }
+
+    .bookmark > .content > * {
+        width: calc(100% - 1em);
         margin: 0.5em;
     }
 
-    .title {
+    .bookmark:not(:hover) .content {
         display: none;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        flex-grow: 1;
     }
-
+    .content > .title {
+        font-size: 1.25rem;
+        font-weight: 500;
+    }
 </style>

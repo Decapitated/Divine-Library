@@ -14,28 +14,31 @@
   })
 </script>
 
-<main>
-  <Input placeholder="Search"></Input>
-  {#if bookmarks.length > 0}
-    <div class="bookmarks">
-      {#each bookmarks as bookmark}
-        <Bookmark bind:bookmark></Bookmark>
-      {/each}
-    </div>
-  {/if}
-</main>
+<Input placeholder="Search"></Input>
+{#if bookmarks.length > 0}
+  <div class="bookmarks">
+    {#each bookmarks as bookmark}
+      <Bookmark bind:bookmark></Bookmark>
+    {/each}
+  </div>
+{/if}
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
+
   :root {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Oswald', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
-  main {
-    background-color: white;
+  :global(body) {
+    background-color: #121212;
+    color: white;
   }
 
-  main > .bookmarks {
+  .bookmarks {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
