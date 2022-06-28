@@ -1,4 +1,5 @@
 <script lang="ts">
+    // Speed and Wait Time in ms.
     export let speed: number, wait: number;
 
     let interval_id = null, timeout_id = null;
@@ -18,7 +19,10 @@
 
     function clear() {
         clearTimeout(timeout_id);
+        timeout_id = null;
+
         clearInterval(interval_id);
+        interval_id = null;
     }
 
     function scroll() {
