@@ -1,34 +1,39 @@
 <script lang="ts">
     export let speed: number, wait: number;
 
-    let interval_id, timeout_id;
+    let interval_id = null, timeout_id = null;
     let direction = true; // True = Scrolling moving left.
 
     let scroller: HTMLDivElement;
+    let inner: HTMLDivElement;
 
     function enter() {
         interval_id = setInterval(scroll, speed);
     }
 
     function leave() {
-        clearTimeout(timeout_id);
-        clearInterval(interval_id);
+        clear();
         scroller.scroll(0, 0);
     }
 
-    function scroll() {
-        const scrollLength = scroller.scrollWidth - scroller.clientWidth;
+    function clear() {
+        clearTimeout(timeout_id);
+        clearInterval(interval_id);
+    }
 
-        if(scroller.clientWidth < scroller.scrollWidth) {
+    function scroll() {
+        const parent = scroller.getBoundingClientRect();
+        const child =  inner.getBoundingClientRect();
+
+        if(parent.width < child.width) {
             scroller.scrollBy(direction ? 1 : -1, 0);
-            // Change directions if at the end.
-            if((direction && scroller.scrollLeft >= scrollLength) || (!direction && scroller.scrollLeft <= 0)) {
-                clearTimeout(timeout_id);
-                clearInterval(interval_id);
-                direction = !direction;
-                timeout_id = setTimeout(() => {
-                    interval_id = setInterval(scroll, speed);
-                }, wait);
+            if((!direction && child.left >= parent.left-1) || (direction && child.right <= parent.right+1)) {
+                if(timeout_id == null) {
+                    timeout_id = setTimeout(() => {
+                        direction = !direction;
+                        timeout_id = null;
+                    }, wait);
+                }
             }
         }
     }
@@ -38,12 +43,16 @@
     bind:this={scroller}
     on:mouseenter={enter}
     on:mouseleave={leave}>
-    <slot></slot>
-</div>
+        <div bind:this={inner}><slot></slot></div>
+    </div>
 
 <style>
     .scroller {
-        white-space: nowrap;
         overflow-x: hidden;
+    }
+
+    .scroller > div {
+        white-space: nowrap;
+        width: fit-content;
     }
 </style>
