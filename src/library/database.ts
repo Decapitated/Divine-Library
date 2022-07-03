@@ -2,20 +2,20 @@
  * Low-Level datastore bindings.
  * Implement type checking at a higher level.
  */
-
-const Datastore = require('nedb');
+const nedb = require('nedb');
+import type Datastore from 'nedb'
 // Folder name to store datastores.
-const dataPath = 'datastores/';
+const DATA_PATH = 'datastores/';
 
-type Databases = {
-    bookmarks: typeof Datastore;
-    new: typeof Datastore;
+export type Databases = {
+    bookmarks: Datastore;
+    new: Datastore;
 };
 
 const db = {} as Databases;
 // Bookmarks datastore setup
-db.bookmarks = new Datastore({
-    filename: dataPath + 'bookmarks.db',
+db.bookmarks = new nedb({
+    filename: DATA_PATH + 'bookmarks.db',
     autoload: true });
 
 db.bookmarks.ensureIndex({ fieldName: 'title', unique: true }, function (e) {
@@ -23,8 +23,8 @@ db.bookmarks.ensureIndex({ fieldName: 'title', unique: true }, function (e) {
 });
 
 // New chapters datastore setup
-db.new = new Datastore({
-    filename:  dataPath + 'new.db',
+db.new = new nedb({
+    filename:  DATA_PATH + 'new.db',
     autoload: true });
 
 db.new.ensureIndex({ fieldName: 'bookmark_id', unique: true }, function (e) {
