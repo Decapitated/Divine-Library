@@ -15,7 +15,7 @@
   })
 </script>
 
-<button on:click={() => tDialog.showDialog()}>Show Dialog</button>
+<button on:click={() => tDialog.show()}>Show Dialog</button>
 <Input placeholder="Search"></Input>
 {#if bookmarks.length > 0}
   <div class="bookmarks">
@@ -31,6 +31,7 @@
     <Input placeholder="Title"></Input>
     <Input placeholder="Chapter"></Input>
     <Input placeholder="Url"></Input>
+    <button type="button" on:click={() => tDialog.hide()}>Add Bookmark</button>
   </div>
 </Dialog>
 
@@ -58,5 +59,8 @@
   .add-chapter-dialog {
     display: flex;
     flex-direction: column;
+    background-color: #121212;
+    border-radius: 5px;
+    padding: 1rem;
   }
 </style>

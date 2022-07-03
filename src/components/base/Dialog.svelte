@@ -9,14 +9,20 @@
 
     onMount(() => {
         dialog = new A11yDialog(element);
+        dialog.on('show', () => {
+            document.documentElement.style.overflowY = 'hidden';
+        });
         dialog.on('hide', () => {
             document.documentElement.style.overflowY = '';
         });
     });
 
-    export function showDialog() {
+    export function show() {
         dialog.show();
-        document.documentElement.style.overflowY = 'hidden';
+    }
+
+    export function hide() {
+        dialog.hide();
     }
     
 </script>
@@ -25,10 +31,6 @@
     <div class="dialog-overlay"></div>
     <!-- 3. The actual dialog -->
     <div class="dialog-content" role="document">
-        <!-- 4. The close button -->
-        <button type="button" data-a11y-dialog-hide aria-label="Close dialog">
-        &times;
-        </button>
         <!-- 6. Dialog content -->
         <slot></slot>
     </div>
@@ -83,6 +85,5 @@
         margin: auto; /* 1 */
         z-index: 2; /* 2 */
         position: relative; /* 2 */
-        background-color: white; /* 3 */
     }
 </style>
