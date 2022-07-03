@@ -15,6 +15,7 @@
     function leave() {
         clear();
         scroller.scroll(0, 0);
+        direction = true;
     }
 
     function clear() {
