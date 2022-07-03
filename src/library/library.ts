@@ -26,7 +26,7 @@ export function editBookmark(id: string, bookmark: Bookmark): Promise<Bookmark> 
             {_id: id},                             // Match id.
             bookmark,                              // Data for update.
             {returnUpdatedDocs: true},             // Additional options.
-            (e, numAffected, updatedBookmark) => { // Callback.
+            (e, _numAffected, updatedBookmark, _upsert) => { // Callback.
                 e ? reject(e) : resolve(updatedBookmark);
             }
         );
@@ -40,7 +40,7 @@ export function setChapter(id: string, chapter: number): Promise<Bookmark> {
             { _id: id },                           // Match id.
             { $set: { chapter: chapter } },        // Data for update.
             { returnUpdatedDocs: true },           // Additional options.
-            (e, numAffected, updatedBookmark) => { // Callback.
+            (e, _numAffected, updatedBookmark, _upsert) => { // Callback.
                 e ? reject(e) : resolve(updatedBookmark);
             }
         );
@@ -88,8 +88,8 @@ export function updateNewChapter(bookmark_id: string, chapter: number): Promise<
             {bookmark_id: bookmark_id},           // Match id.
             {bookmark_id: bookmark_id, chapter: chapter}, // Data for update.
             {returnUpdatedDocs: true},            // Additional options.
-            (e, numAffected, updatedChapter) => { // Callback.
-                e ? reject(e) : resolve(updatedChapter);
+            (e, _numAffected, updatedBookmark, _upsert) => { // Callback.
+                e ? reject(e) : resolve(updatedBookmark);
             }
         );
     });
