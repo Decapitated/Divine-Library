@@ -2,7 +2,9 @@
  * Low-Level datastore bindings.
  * Implement type checking at a higher level.
  */
+
 const Datastore = require('nedb');
+// Folder name to store datastores.
 const dataPath = 'datastores/';
 
 type Databases = {
