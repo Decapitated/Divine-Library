@@ -27,11 +27,8 @@
     
 </script>
 <div class="dialog-container" role="alertdialog" aria-hidden="true" bind:this={element}>
-    <!-- 2. The dialog overlay -->
     <div class="dialog-overlay"></div>
-    <!-- 3. The actual dialog -->
     <div class="dialog-content" role="document">
-        <!-- 6. Dialog content -->
         <slot></slot>
     </div>
 </div>

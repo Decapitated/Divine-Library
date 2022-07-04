@@ -1,22 +1,26 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import Input from './components/base/Input.svelte';
-  import BookmarkCard from './components/BookmarkCard.svelte';
-  import Dialog from './components/base/Dialog.svelte';
-  import type { Bookmark } from './library/types';
-  import { getBookmarks } from './library/library';
+    import { onMount } from 'svelte';
+    import Input from './components/base/Input.svelte';
+    import BookmarkCard from './components/BookmarkCard.svelte';
+    import AddBookmarkDialog from './components/AddBookmarkDialog.svelte';
+    import type { Bookmark } from './library/types';
+    import { getBookmarks } from './library/library';
 
-  let bookmarks: Bookmark[] = [];
-  
-  let tDialog: Dialog;
+    let bookmarks: Bookmark[] = [];
 
-  onMount(async () => {
-    bookmarks = await getBookmarks();
-  })
+    let addDialog: AddBookmarkDialog;
+    let search_value: string;
+
+    onMount(async () => {
+        bookmarks = await getBookmarks();
+    })
 </script>
 
-<button on:click={() => tDialog.show()}>Show Dialog</button>
-<Input placeholder="Search"></Input>
+<button on:click={() => addDialog.show()}>Show Dialog</button>
+<Input placeholder="Search"
+    bind:value={search_value}
+    on:change={(e) => console.log('App Change', e)}
+    on:input={(e) => console.log('App Input', e)}></Input>
 {#if bookmarks.length > 0}
   <div class="bookmarks">
     {#each bookmarks as bookmark}
@@ -26,14 +30,7 @@
     {/each}
   </div>
 {/if}
-<Dialog bind:this={tDialog}>
-  <div class="add-chapter-dialog">
-    <Input placeholder="Title"></Input>
-    <Input placeholder="Chapter"></Input>
-    <Input placeholder="Url"></Input>
-    <button type="button" on:click={() => tDialog.hide()}>Add Bookmark</button>
-  </div>
-</Dialog>
+<AddBookmarkDialog bind:this={addDialog} on:add={(e) => console.log(e.detail)} />
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
@@ -54,13 +51,5 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-  }
-
-  .add-chapter-dialog {
-    display: flex;
-    flex-direction: column;
-    background-color: #121212;
-    border-radius: 5px;
-    padding: 1rem;
   }
 </style>

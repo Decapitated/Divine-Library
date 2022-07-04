@@ -1,14 +1,17 @@
 <script lang="ts">
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
+
     export let placeholder: string;
-    let value: string;
+    export let value: string;
 </script>
 
 <div class="input">
-    <input
-        id="input"
-        class:valid = {value != null && value.length > 0}
-        type="text" bind:value>
-    <label for="input">{placeholder}</label>
+    <input id="input" class:valid = { value != null && value.length > 0 } bind:value
+        on:change={(e) => dispatch("change", e.target.value)}
+        on:input={(e) => dispatch("input", e.target.value)}>
+    <label for="input">{ placeholder }</label>
 </div>
 
 <style>
