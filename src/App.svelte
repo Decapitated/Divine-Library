@@ -44,7 +44,7 @@
 {#if bookmarks.length > 0}
   <div class="bookmarks">
     {#each bookmarks as bookmark}
-        <BookmarkWidget type={view_type} bind:bookmark on:click={() => {
+        <BookmarkWidget type={view_type} backup_img="./assets/Magic-Scroll.png" bind:bookmark on:click={() => {
             console.log('BookmarkWidget', bookmark.title);
         }} />
     {/each}

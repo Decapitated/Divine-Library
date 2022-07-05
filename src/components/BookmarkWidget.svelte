@@ -1,17 +1,19 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
     import Scroller from './base/Scroller.svelte';
+    import Image from './base/Image.svelte';
     import type { Bookmark } from '../library/types';
 
     export let bookmark: Bookmark;
     export let type = 'card';
+    export let backup_img = '';
 
     const dispatch = createEventDispatcher();
 </script>
 
 <div class="bookmark" class:list={type == 'list'} on:click={() => dispatch('click')}>
     <div class="cover">
-        <img alt={bookmark.title} src={bookmark.imgUrl}>
+        <Image alt={bookmark.title} src={bookmark.imgUrl} backup={backup_img}/>
     </div>
     <div class="content">
         <div class="title">
@@ -50,7 +52,7 @@
         width: 5em;
     }
 
-    .cover > img {
+    .cover > :global(img) {
         object-fit: cover;
         object-position: 50% 50%;
         height: 100%;
@@ -59,7 +61,7 @@
         transition: all 0.15s;
     }
 
-    .bookmark:not(.list):hover img {
+    .bookmark:not(.list):hover :global(img) {
         height: 125%;
     }
 
