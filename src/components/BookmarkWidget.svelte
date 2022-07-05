@@ -4,11 +4,12 @@
     import type { Bookmark } from '../library/types';
 
     export let bookmark: Bookmark;
+    export let type = 'card';
 
     const dispatch = createEventDispatcher();
 </script>
 
-<div class="bookmark" on:click={() => dispatch('click')}>
+<div class="bookmark" class:list={type == 'list'} on:click={() => dispatch('click')}>
     <div class="cover">
         <img alt={bookmark.title} src={bookmark.imgUrl}>
     </div>
@@ -22,11 +23,20 @@
 <style>
     .bookmark {
         display: flex;
-        margin: 0.5em;
         height: 14em;
         width: 10em;
+        margin: 0.5em;
         position: relative;
         box-shadow: 0px 5px 5px -5px black;
+        border-radius: 5px;
+        background-color: #0c0c0c;
+    }
+
+    .bookmark.list {
+        height: 5em;
+        min-width: 15em;
+        flex-grow: 1;
+        flex-direction: row;
     }
 
     .cover {
@@ -34,6 +44,10 @@
         width: 100%;
         border-radius: 5px;
         overflow: hidden;
+    }
+
+    .list .cover {
+        width: 5em;
     }
 
     .cover > img {
@@ -45,7 +59,7 @@
         transition: all 0.15s;
     }
 
-    .bookmark:hover img {
+    .bookmark:not(.list):hover img {
         height: 125%;
     }
 
@@ -60,14 +74,21 @@
         background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(18,17,17,1) 100%);
     }
 
+    .list .content {
+        position: relative;
+        align-items: center;
+        background: none;
+    }
+
     .bookmark > .content > * {
         width: calc(100% - 1em);
         margin: 0.5em;
     }
 
-    .bookmark:not(:hover) .content {
+    .bookmark:not(.list):not(:hover) .content {
         display: none;
     }
+
     .content > .title {
         font-size: 1.25rem;
         font-weight: 500;

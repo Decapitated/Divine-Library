@@ -24,8 +24,8 @@
     export function hide() {
         dialog.hide();
     }
-    
 </script>
+
 <div class="dialog-container" role="alertdialog" aria-hidden="true" bind:this={element}>
     <div class="dialog-overlay"></div>
     <div class="dialog-content" role="document">

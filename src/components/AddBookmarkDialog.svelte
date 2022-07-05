@@ -43,6 +43,10 @@
     export function show() {
         dialog.show();
     }
+
+    export function hide() {
+        dialog.hide();
+    }
 </script>
 
 <Dialog bind:this={dialog}>
