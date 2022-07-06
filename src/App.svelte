@@ -9,8 +9,11 @@
     let bookmarks: Bookmark[] = [];
 
     let addDialog: AddBookmarkDialog;
+    let addDialogReset = {};
+
     let search_value: string;
     let view_type = 'card';
+    const backup_img = './assets/Magic-Scroll.png';
 
     onMount(async () => {
         bookmarks = await getBookmarks();
@@ -20,7 +23,7 @@
         addBookmark(bookmark).then((addedBookmark) => {
             bookmarks.push(addedBookmark);
             bookmarks = bookmarks;
-            addDialog.hide();
+            addDialogReset = {};
         });
     }
 </script>
@@ -43,13 +46,15 @@
 {#if bookmarks.length > 0}
   <div class="bookmarks">
     {#each bookmarks as bookmark}
-        <BookmarkWidget type={view_type} backup_img="./assets/Magic-Scroll.png" bind:bookmark on:click={() => {
+        <BookmarkWidget type={view_type} backup_img={backup_img} bind:bookmark on:click={() => {
             console.log('BookmarkWidget', bookmark.title);
         }} />
     {/each}
   </div>
 {/if}
-<AddBookmarkDialog bind:this={addDialog} on:add={(e) => add(e.detail)} />
+{#key addDialogReset}
+    <AddBookmarkDialog bind:this={addDialog} on:add={(e) => add(e.detail)} />
+{/key}
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
