@@ -26,14 +26,13 @@
 </script>
 
 <button on:click={() => addDialog.show()}>Show Dialog</button>
-
 <Input placeholder="Search"
-    bind:value={search_value}
-    on:change={(e) => console.log('App Change', e)}
-    on:input={(e) => console.log('App Input', e)}></Input>
+            bind:value={search_value}
+            on:change={(e) => console.log('App Change', e)}
+            on:input={(e) => console.log('App Input', e)}></Input>
 <div class="bookmark-bar">
-    <div></div>
-    <div></div>
+    <div><h3>Divine Library</h3></div>
+    <div><i>Central Standard Time</i></div>
     <div>
         <select bind:value={view_type}>
             <option value="card" selected>Card</option>
@@ -63,8 +62,12 @@
     }
 
     :global(body) {
-        background-color: #121212;
+        background-color: #0c0c0c;
         color: white;
+    }
+    :global(body *) {
+        background-color: inherit;
+        color: inherit;
     }
 
     .bookmark-bar {
@@ -74,15 +77,21 @@
     }
 
     .bookmark-bar > * {
-        flex-basis: 33.333333%;
         display: flex;
+        align-items: center;
+        flex-basis: 33.333333%;
+        flex-grow: 1;
     }
 
-    .bookmark-bar > :nth-child(2) {
+    .bookmark-bar > * > :global(*) {
+        height: fit-content;
+    }
+
+    .bookmark-bar > :not(:first-child):not(:last-child) {
         justify-content: center;
     }
 
-    .bookmark-bar > :nth-child(3) {
+    .bookmark-bar > :last-child{
         justify-content: flex-end;
     }
 

@@ -31,7 +31,13 @@
         position: relative;
         box-shadow: 0px 5px 5px -5px black;
         border-radius: 5px;
-        background-color: #0c0c0c;
+        background-color: #121212;
+        transition: all 0.15s;
+    }
+
+    .bookmark:hover {
+        transform: scale(1.05);
+        z-index: 2;
     }
 
     .bookmark.list {
@@ -59,10 +65,6 @@
         width: 100%;
         border-radius: inherit;
         transition: all 0.15s;
-    }
-
-    .bookmark:not(.list):hover :global(img) {
-        height: 125%;
     }
 
     .content {
