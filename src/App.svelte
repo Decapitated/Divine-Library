@@ -34,8 +34,15 @@
             on:change={(e) => console.log('App Change', e)}
             on:input={(e) => console.log('App Input', e)}></Input>
 <div class="bookmark-bar">
-    <div><h3>Divine Library</h3></div>
-    <div><i>Central Standard Time</i></div>
+    <!-- Left -->
+    <div>
+        <h3>Divine Library</h3>
+    </div>
+    <!-- Center -->
+    <div>
+        <i>Central Standard Time</i>
+    </div>
+    <!-- Right -->
     <div>
         <select bind:value={view_type}>
             <option value="card" selected>Card</option>
@@ -46,7 +53,7 @@
 {#if bookmarks.length > 0}
   <div class="bookmarks">
     {#each bookmarks as bookmark}
-        <BookmarkWidget type={view_type} backup_img={backup_img} bind:bookmark on:click={() => {
+        <BookmarkWidget type={view_type} {backup_img} {bookmark} on:click={() => {
             console.log('BookmarkWidget', bookmark.title);
         }} />
     {/each}

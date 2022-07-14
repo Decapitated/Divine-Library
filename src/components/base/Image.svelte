@@ -15,4 +15,4 @@
     });
 </script>
 
-<img bind:this={image} alt={alt}/>
+<img bind:this={image} {alt}/>
