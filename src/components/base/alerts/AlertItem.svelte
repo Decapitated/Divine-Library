@@ -54,13 +54,17 @@
 
 <style>
     .alert {
-        padding: 1em;
+        padding: 0.5rem;
         pointer-events: auto;
-        border-radius: 1rem;
+        position: relative;
     }
 
     :global(.progress) {
-        height: 1rem;
+        height: 5px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
     }
 
     .debug {

@@ -40,4 +40,14 @@
         flex-direction: column-reverse;
         justify-content: end;
     }
+
+    :global(.alert) {
+        border-left: 2.5px solid white;
+    }
+    :global(.alert:not(:last-child)) {
+        margin-top: 0.5rem;
+    }
+    :global(.alert:last-child) {
+        border-top-right-radius: 0.5rem;
+    }
 </style>
