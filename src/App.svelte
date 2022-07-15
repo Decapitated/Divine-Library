@@ -3,17 +3,24 @@
     import Input from './components/base/Input.svelte';
     import BookmarkWidget from './components/BookmarkWidget.svelte';
     import AddBookmarkDialog from './components/AddBookmarkDialog.svelte';
+    import Alerts from './components/base/alerts/Alerts.svelte';
+    import { Alert, AlertTypes } from './components/base/types';
+
     import type { Bookmark } from './library/types';
     import { getBookmarks, addBookmark } from './library/library';
 
+    // Bookmark stuff.
+    let view_type = 'card';
+    const backup_img = './assets/Magic-Scroll.png';
     let bookmarks: Bookmark[] = [];
 
+    // Dialog stuff.
     let addDialog: AddBookmarkDialog;
     let addDialogReset = {};
 
     let search_value: string;
-    let view_type = 'card';
-    const backup_img = './assets/Magic-Scroll.png';
+
+    let alerter: Alerts;
 
     onMount(async () => {
         bookmarks = await getBookmarks();
@@ -26,8 +33,19 @@
             addDialogReset = {};
         });
     }
+
+    function alertTest() {
+        const alertObj = {
+            title: 'Test Title',
+            message: 'Test message...',
+            type: AlertTypes.Debug
+        } as Alert;
+        alerter.alert(alertObj);
+    }
 </script>
 
+<Alerts bind:this={alerter} />
+<button on:click={alertTest}>Test Alert</button>
 <button on:click={() => addDialog.show()}>Show Dialog</button>
 <Input placeholder="Search"
             bind:value={search_value}
