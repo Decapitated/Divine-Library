@@ -59,12 +59,27 @@
         border-radius: 1rem;
     }
 
+    :global(.progress) {
+        height: 1rem;
+    }
+
     .debug {
         background-color: #c1c1c1;
         color: black;
     }
 
-    :global(.progress) {
-        height: 1rem;
+    .info {
+        background-color: #45C639;
+        color: white;
+    }
+
+    .error {
+        background-color: #FA4655;
+        color: white;
+    }
+
+    .warning {
+        background-color: #FCB800;
+        color: white;
     }
 </style>

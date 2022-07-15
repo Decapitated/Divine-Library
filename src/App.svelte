@@ -34,13 +34,30 @@
         });
     }
 
-    function alertTest() {
-        const alertObj = {
-            title: 'Test Title',
+    const alerts = [
+        {
+            title: 'Debug',
             message: 'Test message...',
             type: AlertTypes.Debug
-        } as Alert;
-        alerter.alert(alertObj);
+        },
+        {
+            title: 'Info',
+            message: 'Test message...',
+            type: AlertTypes.Info
+        },
+        {
+            title: 'Warning',
+            message: 'Test message...',
+            type: AlertTypes.Warning
+        },
+        {
+            title: 'Error',
+            message: 'Test message...',
+            type: AlertTypes.Error
+        },
+    ] as Alert[];
+    function alertTest() {
+        alerts.forEach((alert) => alerter.alert(alert));
     }
 </script>
 
