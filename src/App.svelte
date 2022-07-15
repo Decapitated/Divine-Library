@@ -45,8 +45,10 @@
 </script>
 
 <Alerts bind:this={alerter} />
-<button on:click={alertTest}>Test Alert</button>
-<button on:click={() => addDialog.show()}>Show Dialog</button>
+<div style:display="flex" style:justify-content="flex-end">
+    <button on:click={alertTest}>Test Alert</button>
+    <button on:click={() => addDialog.show()}>Show Dialog</button>
+</div>
 <Input placeholder="Search"
             bind:value={search_value}
             on:change={(e) => console.log('App Change', e)}
