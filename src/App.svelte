@@ -111,8 +111,14 @@
     }
 
     :global(body) {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
         background-color: #0c0c0c;
         color: white;
+        padding: 0;
+        margin: 0;
     }
     :global(body *) {
         background-color: inherit;
@@ -148,5 +154,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+        flex-grow: 1;
+        overflow-y: auto;
     }
 </style>

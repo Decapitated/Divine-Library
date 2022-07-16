@@ -23,7 +23,7 @@
 
 <style>
     .container {
-        position: fixed;
+        position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
@@ -35,7 +35,7 @@
 
     .column {
         height: 100%;
-        width: 20rem;
+        max-width: 20rem;
         display: flex;
         flex-direction: column-reverse;
         justify-content: end;
@@ -44,8 +44,6 @@
     :global(.alert) {
         border-left: 2.5px solid white;
         border-radius: 0 0.5rem 0.5rem 0;
-    }
-    :global(.alert:not(:last-child)) {
-        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
     }
 </style>
