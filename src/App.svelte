@@ -1,10 +1,13 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+
+    // Components
     import Input from './components/base/Input.svelte';
     import BookmarkWidget from './components/BookmarkWidget.svelte';
     import AddBookmarkDialog from './components/AddBookmarkDialog.svelte';
     import Alerts from './components/base/alerts/Alerts.svelte';
     import { Alert, AlertTypes } from './components/base/types';
+    import FloatingButtons from './components/base/FloatingButtons.svelte';
 
     import type { Bookmark } from './library/types';
     import { getBookmarks, addBookmark } from './library/library';
@@ -60,16 +63,10 @@
         alerts.forEach((alert) => alerter.alert(alert));
     }
 </script>
-
-<Alerts bind:this={alerter} />
 <div style:display="flex" style:justify-content="flex-end">
     <button on:click={alertTest}>Test Alert</button>
     <button on:click={() => addDialog.show()}>Show Dialog</button>
 </div>
-<Input placeholder="Search"
-            bind:value={search_value}
-            on:change={(e) => console.log('App Change', e)}
-            on:input={(e) => console.log('App Input', e)}></Input>
 <div class="bookmark-bar">
     <!-- Left -->
     <div>
@@ -77,7 +74,10 @@
     </div>
     <!-- Center -->
     <div>
-        <i>Central Standard Time</i>
+        <Input placeholder="Search"
+            bind:value={search_value}
+            on:change={(e) => console.log('App Change', e)}
+            on:input={(e) => console.log('App Input', e)}></Input>
     </div>
     <!-- Right -->
     <div>
@@ -87,19 +87,27 @@
         </select>
     </div>
 </div>
-{#if bookmarks.length > 0}
-  <div class="bookmarks">
-    {#each bookmarks as bookmark}
-        <BookmarkWidget type={view_type} {backup_img} {bookmark} on:click={() => {
-            console.log('BookmarkWidget', bookmark.title);
-        }} />
-    {/each}
-  </div>
-{/if}
+<main>
+    <Alerts bind:this={alerter} />
+    {#if bookmarks.length > 0}
+        <div class="bookmarks">
+            {#each bookmarks as bookmark}
+                <BookmarkWidget type={view_type} {backup_img} {bookmark} on:click={() => {
+                    console.log('BookmarkWidget', bookmark.title);
+                }} />
+            {/each}
+        </div>
+    {/if}
+    <FloatingButtons>
+        <svelte:fragment slot="options">
+            <button>A</button>
+            <button>B</button>
+            <button>C</button>
+        </svelte:fragment></FloatingButtons>
+</main>
 {#key addDialogReset}
     <AddBookmarkDialog bind:this={addDialog} on:add={(e) => add(e.detail)} />
 {/key}
-
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
 
@@ -120,6 +128,7 @@
         padding: 0;
         margin: 0;
     }
+
     :global(body *) {
         background-color: inherit;
         color: inherit;
@@ -150,11 +159,17 @@
         justify-content: flex-end;
     }
 
+    main {
+        position: relative;
+        display: flex;
+        flex-grow: 1;
+        overflow-y: hidden;
+    }
+
     .bookmarks {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        flex-grow: 1;
         overflow-y: auto;
     }
 </style>

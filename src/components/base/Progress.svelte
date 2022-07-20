@@ -9,6 +9,10 @@
 </div>
 
 <style>
+    * {
+        pointer-events: none;
+    }
+
     .progress {
         display: flex;
         background-color: transparent !important;
