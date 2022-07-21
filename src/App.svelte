@@ -63,6 +63,9 @@
         alerts.forEach((alert) => alerter.alert(alert));
     }
 </script>
+{#key addDialogReset}
+    <AddBookmarkDialog bind:this={addDialog} on:add={(e) => add(e.detail)} />
+{/key}
 <div style:display="flex" style:justify-content="flex-end">
     <button on:click={alertTest}>Test Alert</button>
     <button on:click={() => addDialog.show()}>Show Dialog</button>
@@ -103,11 +106,10 @@
             <button>A</button>
             <button>B</button>
             <button>C</button>
-        </svelte:fragment></FloatingButtons>
+        </svelte:fragment>
+        <svelte:fragment slot="toggle-text" let:toggled>{(toggled)? 'Close' : 'Open'}</svelte:fragment>
+    </FloatingButtons>
 </main>
-{#key addDialogReset}
-    <AddBookmarkDialog bind:this={addDialog} on:add={(e) => add(e.detail)} />
-{/key}
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
 
@@ -171,5 +173,10 @@
         flex-wrap: wrap;
         justify-content: center;
         overflow-y: auto;
+        scroll-snap-type: y proximity;
+    }
+
+    :global(.bookmark) {
+        scroll-snap-align: start;
     }
 </style>

@@ -11,7 +11,7 @@
     const dispatch = createEventDispatcher();
 </script>
 
-<div class="bookmark" class:list={type == 'list'} on:click={() => dispatch('click')}>
+<div class="bookmark {$$props.class}" class:list={type == 'list'} on:click={() => dispatch('click')}>
     <div class="cover">
         <Image alt={bookmark.title} src={bookmark.imgUrl} backup={backup_img}/>
     </div>
@@ -33,11 +33,6 @@
         border-radius: 5px;
         background-color: #121212;
         transition: all 0.15s;
-    }
-
-    .bookmark:hover {
-        transform: scale(1.05);
-        z-index: 2;
     }
 
     .bookmark.list {

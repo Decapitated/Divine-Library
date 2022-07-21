@@ -54,7 +54,7 @@
     *    dialog.
     */
     .dialog-container {
-        z-index: 2; /* 1 */
+        z-index: 99; /* 1 */
         display: flex; /* 2 */
     }
 

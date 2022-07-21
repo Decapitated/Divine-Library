@@ -2,13 +2,17 @@
     let toggled = false;
 </script>
 
-<div class="fb-container">
-    <div class="options" class:toggled>
+<div class="fb-container" class:toggled>
+    <div class="options">
         <slot name="options">
-            <button>^</button>
+            <button>N/A</button>
         </slot>
     </div>
-    <button class="toggle" on:click={() => toggled = !toggled}>{(toggled)? '-' : '+'}</button>
+    <div>
+        <button class="toggle" on:click={() => toggled = !toggled}>
+            <slot name="toggle-text" {toggled}>{(toggled)? '-' : '+'}</slot>
+        </button>
+    </div>
 </div>
 
 <style>
@@ -22,7 +26,8 @@
         bottom: 0;
         height: fit-content;
         width: fit-content;
-        z-index: 100;
+        margin-right: 1.1rem;
+        z-index: 98;
         background: none !important;
         pointer-events: none;
     }
@@ -31,26 +36,38 @@
         display: flex;
         flex-direction: column;
         height: fit-content;
-        transition: height 0.15s;
+        transition: height 0.15s, opacity 0.15s;
     }
 
-    .options:not(.toggled) {
+    .fb-container:not(.toggled) .options {
+        display: none;
         height: 0;
         opacity: 0;
     }
 
     .fb-container :global(button) {
+        border: 1px solid white;
         border-radius: 100%;
         width: 3rem;
         height: 3rem;
-        background-color: white;
-        color: black;
+        background-color: black;
+        color: white;
         pointer-events: auto;
         cursor: pointer;
-        margin: 0.5rem 1rem;
+        margin: 0.5rem 0;
+        transition: filter 0.15s;
     }
 
-    button:hover {
+    .fb-container.toggled .toggle {
+        background-color: red;
+        color:  white;
+    }
+
+    .fb-container :global(button):hover {
         filter: invert(100%);
+    }
+
+    .fb-container :global(button):active {
+        filter: invert(75%);
     }
 </style>
