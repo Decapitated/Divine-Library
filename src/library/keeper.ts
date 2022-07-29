@@ -24,7 +24,7 @@ function GET(url: string): Promise<XMLHttpRequest> {
     });
 }
 
-export function sourceToString(source: Source, chapter: number) {
+export function sourceToBaseURL(source: Source, chapter: number) {
     try{
         return source.website + source.page + source.format + String(chapter).padStart(source.pad, '0');
     } catch(e) {
@@ -32,23 +32,25 @@ export function sourceToString(source: Source, chapter: number) {
     }
 }
 
+const knownStrings = [
+    '"entry-content',
+    '"container-chapter-reader"',
+    '"pages-container"',
+    '"chapcontent"'
+].join('|');
+const knownRegex = new RegExp(knownStrings);
+
 export async function checkChapter(bookmark: Bookmark, chapter: number) {
-    let url = 'https://' + sourceToString(bookmark.url, chapter) + '/';
-    try {
-        let xmlHttp = await GET(url);
-        let parsedUrl = parseChapterUrl(xmlHttp.responseURL);
-
-        let urlMatch = sourceToString(parsedUrl.source, parsedUrl.chapter) == sourceToString(bookmark.url, chapter);
-        // Check if loaded page contains these known strings
-        // ALERT: Add custom list of strings.
-        let contains = xmlHttp.responseText.includes('"entry-content');
-        if(!contains) contains = xmlHttp.responseText.includes('"container-chapter-reader"');
-        if(!contains) contains = xmlHttp.responseText.includes('"pages-container"');
-        if(!contains) contains = xmlHttp.responseText.includes('"chapcontent"');
-        return urlMatch && contains;
-    }catch(e) {
-        throw e;
-    }
+    const url = sourceToBaseURL(bookmark.url, chapter);
+    // Make request.
+    const request = await GET('https://' + url + '/');
+    // Parse the URL where the request landed.
+    const parsedUrl = parseChapterUrl(request.responseURL);
+    // ALERT: May want to remove this. May help with weird redirects. Known strings should be the goto anyhow.
+    // Check if the parsed url matches the requested url.
+    const urlMatch = parsedUrl != null && sourceToBaseURL(parsedUrl.source, parsedUrl.chapter) == url;
+    // ALERT: Add custom list of strings.
+    // Check if requested page contains these known strings.
+    const contains = knownRegex.test(request.responseText);
+    return urlMatch && contains;
 }
-
-export {}
