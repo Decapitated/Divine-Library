@@ -60,7 +60,7 @@ export function deleteBookmark(bookmark_id: string): Promise<number> {
 }
 
 // Send url to electron to open browser.
-export function openUrl(url) {
+export function openUrl(url: String) {
     nw.Shell.openExternal(url);
 }
 
