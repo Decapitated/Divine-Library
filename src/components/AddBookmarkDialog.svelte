@@ -1,9 +1,14 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, getContext } from 'svelte';
     import Input from './base/Input.svelte';
     import Dialog from './base/Dialog.svelte';
     import { parseChapterUrl } from './../library/utilities';
     import type { Bookmark } from './../library/types';
+
+    import { APP_CONTEXT_KEY, ContextType } from './../App.svelte';
+    import type { AlertTypes } from './base/types';
+
+    const { alert } = getContext<ContextType>(APP_CONTEXT_KEY);
 
     const dispatch = createEventDispatcher();
 
@@ -43,15 +48,13 @@
     function addBookmark() {
         if(checkBookmark()) {
             dispatch('add', newBookmark);
+        }else{
+            alert({title: 'Invalid', message: 'Bookmark information entered is invalid.', type: AlertTypes.Error});
         }
     }
 
     export function show() {
         dialog.show();
-    }
-
-    export function hide() {
-        dialog.hide();
     }
 </script>
 
@@ -71,7 +74,7 @@
         {/if}
         <div class="actions">
             <button type="button" on:click={addBookmark}>Add</button>
-            <button type="button" on:click={hide}>Cancel</button>
+            <button type="button" on:click={() => dispatch('cancel')}>Cancel</button>
         </div>
     </div>
 </Dialog>
