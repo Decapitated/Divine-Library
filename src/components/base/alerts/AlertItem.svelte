@@ -51,6 +51,7 @@
         padding: 0.5rem;
         pointer-events: auto;
         position: relative;
+        overflow: hidden;
     }
 
     :global(.progress) {

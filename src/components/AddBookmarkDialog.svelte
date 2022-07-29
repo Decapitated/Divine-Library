@@ -6,7 +6,7 @@
     import type { Bookmark } from './../library/types';
 
     import { APP_CONTEXT_KEY, ContextType } from './../App.svelte';
-    import type { AlertTypes } from './base/types';
+    import { AlertTypes } from './base/types';
 
     const { alert } = getContext<ContextType>(APP_CONTEXT_KEY);
 
@@ -49,7 +49,11 @@
         if(checkBookmark()) {
             dispatch('add', newBookmark);
         }else{
-            alert({title: 'Invalid', message: 'Bookmark information entered is invalid.', type: AlertTypes.Error});
+            alert({
+                title: 'ERROR',
+                message: 'Bookmark information entered is invalid.',
+                type: AlertTypes.Error
+            });
         }
     }
 
@@ -60,18 +64,20 @@
 
 <Dialog bind:this={dialog}>
     <div class="add-chapter-dialog">
-        <Input placeholder="Title" bind:value={newBookmark.title}></Input>
-        {#if fieldErrors.title}
-            <small>Invalid title.</small>
-        {/if}
-        <Input placeholder="Url" bind:value={chapterUrl}></Input>
-        {#if  fieldErrors.url}
-            <small>Invalid chapter url.</small>
-        {/if}
-        <Input placeholder="Cover Image" bind:value={newBookmark.imgUrl}></Input>
-        {#if  fieldErrors.imgUrl}
-            <small>Invalid image url.</small>
-        {/if}
+        <div class="content">
+            <Input placeholder="Title" bind:value={newBookmark.title}></Input>
+            {#if fieldErrors.title}
+                <small>Invalid title.</small>
+            {/if}
+            <Input placeholder="Url" bind:value={chapterUrl}></Input>
+            {#if  fieldErrors.url}
+                <small>Invalid chapter url.</small>
+            {/if}
+            <Input placeholder="Cover Image" bind:value={newBookmark.imgUrl}></Input>
+            {#if  fieldErrors.imgUrl}
+                <small>Invalid image url.</small>
+            {/if}
+        </div>
         <div class="actions">
             <button type="button" on:click={addBookmark}>Add</button>
             <button type="button" on:click={() => dispatch('cancel')}>Cancel</button>
@@ -86,6 +92,10 @@
         background-color: #121212;
         border-radius: 0.5rem;
         padding: 1rem;
+    }
+
+    .add-chapter-dialog > *:not(:last-child) {
+        margin-bottom: 0.5rem;
     }
 
     .actions {
