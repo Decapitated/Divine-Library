@@ -15,12 +15,13 @@
     import { Alert, AlertTypes } from './components/base/types';
     import FloatingButtons from './components/base/FloatingButtons.svelte';
 
-    import type { Bookmark } from './library/types';
-    import { getBookmarks, addBookmark } from './library/library';
+    import type { Bookmark, NewChapter } from './library/types';
+    import { getBookmarks, getNewChapters, addBookmark } from './library/library';
 
     // Bookmark stuff.
     let view_type = 'card';
     let bookmarks: Bookmark[] = [];
+    let newBookmarks: NewChapter[] = [];
 
     // Dialog stuff.
     let addDialog: AddBookmarkDialog;
@@ -35,8 +36,19 @@
     });
 
     onMount(async () => {
-        bookmarks = await getBookmarks();
+        newBookmarks = await getNewChapters();
+        bookmarks = sortBookmarks(await getBookmarks());
     });
+
+    function sortBookmarks(bParam: Bookmark[]) {
+        return bParam.sort((a, b) => {
+            let aNew = newBookmarks.some((newMark) => newMark.bookmark_id === a._id);
+            let bNew = newBookmarks.some((newMark) => newMark.bookmark_id === b._id);
+            if(aNew && !bNew) return -1;
+            if(!aNew && bNew) return 1;
+            return a.title.localeCompare(b.title);
+        });
+    }
 
     function add(bookmark: Bookmark) {
         addBookmark(bookmark).then((addedBookmark) => {
@@ -46,6 +58,7 @@
         });
     }
 
+    // Test alerting.
     const alerts = [
         {
             title: 'Debug',
@@ -72,9 +85,12 @@
         alerts.forEach((alert) => alerter.alert(alert));
     }
 
+    // Scroll to Top
     let bookmarksElem: HTMLDivElement;
     function scrollToTop() {
-        bookmarksElem.scrollTo(0, 0);
+        bookmarksElem.scrollTo({
+            left: 0, top: 0, behavior: 'smooth'
+        });
     }
 </script>
 
@@ -111,6 +127,7 @@
         <div bind:this={bookmarksElem} class="bookmarks">
             {#each bookmarks as bookmark}
                 <BookmarkWidget type={view_type} backup_img="./assets/Magic-Scroll.png" {bookmark}
+                    class={(newBookmarks.some(newMark => newMark.bookmark_id === bookmark._id))? 'new':''}
                     on:click={() => {
                         console.log('Bookmark:', bookmark.title);
                     }}
@@ -199,6 +216,10 @@
     }
 
     :global(.bookmark) {
-        scroll-snap-align: start;
+        scroll-snap-align: end;
+    }
+
+    :global(.bookmark.new) {
+        box-shadow: 0px 0px 5px 1px yellow !important;
     }
 </style>

@@ -102,4 +102,9 @@
         display: flex;
         justify-content: space-between;
     }
+
+    small {
+        margin-left: 0.5rem;
+        color: red;
+    }
 </style>
