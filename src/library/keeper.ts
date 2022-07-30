@@ -25,11 +25,7 @@ function GET(url: string): Promise<XMLHttpRequest> {
 }
 
 export function sourceToBaseURL(source: Source, chapter: number) {
-    try{
-        return source.website + source.page + source.format + String(chapter).padStart(source.pad, '0');
-    } catch(e) {
-        return '';
-    }
+    return source.website + source.page + source.format + String(chapter).padStart(source.pad, '0');
 }
 
 const knownStrings = [
@@ -42,15 +38,11 @@ const knownRegex = new RegExp(knownStrings);
 
 export async function checkChapter(bookmark: Bookmark, chapter: number) {
     const url = sourceToBaseURL(bookmark.url, chapter);
-    // Make request.
-    const request = await GET('https://' + url + '/');
-    // Parse the URL where the request landed.
-    const parsedUrl = parseChapterUrl(request.responseURL);
+    const request = await GET('https://' + url + '/'); // Make request.
+    const parsedUrl = parseChapterUrl(request.responseURL); // Parse the URL where the request landed.
     // ALERT: May want to remove this. May help with weird redirects. Known strings should be the goto anyhow.
-    // Check if the parsed url matches the requested url.
     const urlMatch = parsedUrl != null && sourceToBaseURL(parsedUrl.source, parsedUrl.chapter) == url;
     // ALERT: Add custom list of strings.
-    // Check if requested page contains these known strings.
-    const contains = knownRegex.test(request.responseText);
+    const contains = knownRegex.test(request.responseText); // Check if requested page contains these known strings.
     return urlMatch && contains;
 }
