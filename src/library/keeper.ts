@@ -42,7 +42,6 @@ export async function checkChapter(bookmark: Bookmark, chapter: number) {
     const parsedUrl = parseChapterUrl(request.responseURL); // Parse the URL where the request landed.
     // ALERT: May want to remove this. May help with weird redirects. Known strings should be the goto anyhow.
     const urlMatch = parsedUrl != null && sourceToBaseURL(parsedUrl.source, parsedUrl.chapter) == url;
-    // ALERT: Add custom list of strings.
     const contains = knownRegex.test(request.responseText); // Check if requested page contains these known strings.
     return urlMatch && contains;
 }
