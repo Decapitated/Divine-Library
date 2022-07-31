@@ -11,7 +11,7 @@
     const dispatch = createEventDispatcher();
 </script>
 
-<div class="bookmark {$$props.class}" class:list={type == 'list'} on:click={() => dispatch('click')}>
+<div class="bookmark {$$props.class}" class:list={type == 'list'} on:click={() => dispatch('click')} on:dblclick={() => dispatch('dblclick')}>
     <div class="cover">
         <Image alt={bookmark.title} src={bookmark.imgUrl} backup={backup_img}/>
     </div>

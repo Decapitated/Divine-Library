@@ -7,7 +7,7 @@
     const dispatch = createEventDispatcher();
 
     export let alert: Alert;
-    export let lifetime = 5000;
+    export let lifetime = -1;
     export let interval = 25;
 
     let start = -1;
@@ -20,8 +20,10 @@
     let element: HTMLDivElement;
 
     onMount(() => {
-        intervalId = setInterval(update, interval);
-        return () => clearInterval(intervalId);
+        if(lifetime != -1) {
+            intervalId = setInterval(update, interval);
+            return () => clearInterval(intervalId);
+        }
     });
 
     function update() {
@@ -43,6 +45,9 @@
 <div bind:this={element} class="alert {alert.type}" on:click={() => console.log(element)}>
     <div class="title">{alert.title}</div>
     <div class="message">{alert.message}</div>
+    {#if lifetime == -1}
+        <button class="close" on:click={() => dispatch('expire')}>x</button>
+    {/if}
     <Progress progress={(current - start) / (end - start) * 100}/>
 </div>
 
@@ -51,7 +56,19 @@
         padding: 0.5rem;
         pointer-events: auto;
         position: relative;
-        overflow: hidden;
+        overflow-x: clip;
+    }
+
+    .close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        border: none;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        filter: invert(100%);
     }
 
     :global(.progress) {

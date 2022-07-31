@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
     export const APP_CONTEXT_KEY = Symbol();
     export type ContextType = {
-        alert: (alert: Alert) => void;
+        alert: (alert: Alert, lifetime?: number) => void;
     };
 </script>
 <script lang="ts">
@@ -17,7 +17,7 @@
 
     import type { Bookmark, NewChapter } from './library/types';
     import { getBookmarks, getNewChapters, addBookmark } from './library/library';
-    import { checkChapter } from './library/keeper';
+    import { checkChapter, checkNewChapters } from './library/keeper';
 
     // Bookmark stuff.
     let view_type = 'card';
@@ -32,14 +32,18 @@
 
     let alerter: Alerts;
 
-    setContext<ContextType>(APP_CONTEXT_KEY, {
-        alert: (alert: Alert) => alerter.alert(alert)
+    setContext(APP_CONTEXT_KEY, {
+        alert: (alert: Alert, lifetime = -1) => alerter.alert(alert, lifetime)
     });
 
     onMount(async () => {
+        await refresh();
+    });
+
+    async function refresh() {
         newBookmarks = await getNewChapters();
         bookmarks = sortBookmarks(await getBookmarks());
-    });
+    }
 
     function sortBookmarks(bParam: Bookmark[]) {
         return bParam.sort((a, b) => {
@@ -113,10 +117,37 @@
             console.log(error);
         }
     }
+
+    function check() {
+        alerter.alert({
+            title: 'Checking For New Chapters!',
+            message: 'Please wait patiently for check to finish.',
+            type: AlertTypes.Info
+        });
+        checkNewChapters().then(async () => {
+            alerter.alert({
+                title: 'Checking Finished!',
+                message: 'Please wait for refresh.',
+                type: AlertTypes.Info
+            });
+            newBookmarks = [];
+            bookmarks = [];
+            await refresh();
+        }).catch((error) => {
+            alerter.alert({
+                title: 'Failed to check new chapters.',
+                message: error,
+                type: AlertTypes.Error
+            });
+        });
+    }
 </script>
 
 {#key addDialogReset}
-    <AddBookmarkDialog bind:this={addDialog} on:add={(e) => add(e.detail)} on:cancel={() => addDialogReset = {}}/>
+    <AddBookmarkDialog
+        bind:this={addDialog}
+        on:add={(e) => add(e.detail)}
+        on:cancel={() => addDialogReset = {}} />
 {/key}
 <div style:display="flex" style:justify-content="flex-end">
     <button on:click={alertTest}>Test Alert</button>
@@ -125,7 +156,10 @@
 <div class="bookmark-bar">
     <!-- Left -->
     <div>
-        <h3>Divine Library</h3>
+        <select bind:value={view_type}>
+            <option value="card" selected>Card</option>
+            <option value="list" selected>List</option>
+        </select>
     </div>
     <!-- Center -->
     <div>
@@ -136,10 +170,7 @@
     </div>
     <!-- Right -->
     <div>
-        <select bind:value={view_type}>
-            <option value="card" selected>Card</option>
-            <option value="list" selected>List</option>
-        </select>
+        <button on:dblclick={check}>Check</button>
     </div>
 </div>
 <main>
@@ -149,7 +180,7 @@
             {#each bookmarks as bookmark}
                 <BookmarkWidget type={view_type} backup_img="./assets/Magic-Scroll.png" {bookmark}
                     class={(newBookmarks.some(newMark => newMark.bookmark_id === bookmark._id))? 'new':''}
-                    on:click={async () => await bookmarkClick(bookmark)}
+                    on:dblclick={async () => await bookmarkClick(bookmark) }
                 />
             {/each}
         </div>

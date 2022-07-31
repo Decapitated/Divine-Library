@@ -3,18 +3,21 @@
     import AlertItem from './AlertItem.svelte';
 
     let alerts = [];
+    let lifetimes = [];
 
-    export function alert(alert: Alert) {
+    export function alert(alert: Alert, lifetime = -1) {
         const key = crypto.randomUUID();
         alerts[key] = alert;
+        lifetimes[key] = lifetime;
     }
 </script>
 
 <div class="container">
     <div class="column">
         {#each Object.keys(alerts) as key (key)}
-            <AlertItem alert={alerts[key]} on:expire={() => {
+            <AlertItem alert={alerts[key]} lifetime={lifetimes[key]} on:expire={() => {
                 delete alerts[key];
+                delete lifetimes[key];
                 alerts = alerts;
             }} />
         {/each}

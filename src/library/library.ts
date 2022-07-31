@@ -73,9 +73,9 @@ export function getNewChapters(): Promise<NewChapter[]> {
 }
 
 // Add a new chapter if one does not exist.
-export function addNewChapter(bookmark_id: string, chapter: number): Promise<NewChapter> {
+export function addNewChapter(newChapter: NewChapter): Promise<NewChapter> {
     return new Promise((resolve, reject) => {
-        db.new.insert({_id: '', bookmark_id: bookmark_id, chapter: chapter}, (e, newChapter) => {
+        db.new.insert(newChapter, (e, newChapter) => {
             e ? reject(e) : resolve(newChapter);
         });
     });
