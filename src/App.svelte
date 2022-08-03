@@ -10,6 +10,7 @@
     // Components
     import Input from './components/base/Input.svelte';
     import BookmarkCard from './components/BookmarkCard.svelte';
+    import BookmarkWidget from './components/BookmarkWidget.svelte';
     import AddBookmarkDialog from './components/AddBookmarkDialog.svelte';
     import Alerts from './components/base/alerts/Alerts.svelte';
     import { Alert, AlertTypes } from './components/base/types';
@@ -19,18 +20,19 @@
     import { getBookmarks, getNewChapters, addBookmark } from './library/library';
     import { checkNewChapters } from './library/keeper';
 
+    let alerter: Alerts;
+
     // Bookmark stuff.
     let view_type = 'card';
     let bookmarks: Bookmark[] = [];
     let newBookmarks: NewChapter[] = [];
+    let currentReading: Bookmark;
 
     // Dialog stuff.
     let addDialog: AddBookmarkDialog;
     let addDialogReset = {};
 
     let search_value: string;
-
-    let alerter: Alerts;
 
     setContext(APP_CONTEXT_KEY, {
         alert: (alert: Alert, lifetime = -1) => alerter.alert(alert, lifetime)
@@ -169,18 +171,21 @@
             {/each}
         </div>
     {/if}
-    <FloatingButtons>
-        <svelte:fragment slot="options">
-            <button on:click={scrollToTop}>^</button>
-        </svelte:fragment>
-        <svelte:fragment slot="toggle-text" let:toggled>
-            {#if !toggled}
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M12 22q-2.075 0-3.9-.788-1.825-.787-3.175-2.137-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175 1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138 1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175-1.35 1.35-3.175 2.137Q14.075 22 12 22Zm0-2q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4 8.65 4 6.325 6.325 4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z"/></svg>
-            {:else}
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M12 17q2.075 0 3.538-1.463Q17 14.075 17 12t-1.462-3.538Q14.075 7 12 7 9.925 7 8.463 8.462 7 9.925 7 12q0 2.075 1.463 3.537Q9.925 17 12 17Zm0 5q-2.075 0-3.9-.788-1.825-.787-3.175-2.137-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175 1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138 1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175-1.35 1.35-3.175 2.137Q14.075 22 12 22Zm0-2q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4 8.65 4 6.325 6.325 4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z"/></svg>
-            {/if}
-        </svelte:fragment>
-    </FloatingButtons>
+    <div class="overlay">
+        <BookmarkWidget bookmark={currentReading} backup_img="./assets/Magic-Scroll.png"></BookmarkWidget>
+        <FloatingButtons>
+            <svelte:fragment slot="options">
+                <button on:click={scrollToTop}>^</button>
+            </svelte:fragment>
+            <svelte:fragment slot="toggle-text" let:toggled>
+                {#if !toggled}
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M12 22q-2.075 0-3.9-.788-1.825-.787-3.175-2.137-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175 1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138 1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175-1.35 1.35-3.175 2.137Q14.075 22 12 22Zm0-2q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4 8.65 4 6.325 6.325 4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z"/></svg>
+                {:else}
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M12 17q2.075 0 3.538-1.463Q17 14.075 17 12t-1.462-3.538Q14.075 7 12 7 9.925 7 8.463 8.462 7 9.925 7 12q0 2.075 1.463 3.537Q9.925 17 12 17Zm0 5q-2.075 0-3.9-.788-1.825-.787-3.175-2.137-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175 1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138 1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175-1.35 1.35-3.175 2.137Q14.075 22 12 22Zm0-2q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4 8.65 4 6.325 6.325 4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z"/></svg>
+                {/if}
+            </svelte:fragment>
+        </FloatingButtons>
+    </div>
 </main>
 
 <style>
@@ -213,6 +218,8 @@
         display: flex;
         flex-direction: row;
         justify-content: center;
+        z-index: 2;
+        box-shadow: 0px 10px 5px -5px black;
     }
 
     .bookmark-bar > * {
@@ -249,11 +256,46 @@
         scroll-snap-type: y proximity;
     }
 
+    /* width */
+    .bookmarks::-webkit-scrollbar {
+        width: 0.75rem;
+    }
+
+    /* Track */
+    .bookmarks::-webkit-scrollbar-track {
+        background-color: #202020;
+    }
+
+    /* Handle */
+    .bookmarks::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    /* Handle on hover */
+    .bookmarks::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
     :global(.bookmark) {
         scroll-snap-align: end;
     }
 
     :global(.bookmark.new) {
         box-shadow: 0px 0px 5px 3px yellow !important;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        display: flex;
+        justify-content: end;
+        align-items: end;
+
+        background: none;
+        pointer-events: none;
     }
 </style>

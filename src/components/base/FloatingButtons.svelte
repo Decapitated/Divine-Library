@@ -24,14 +24,9 @@
         display: flex;
         flex-direction: column;
         justify-content: end;
-
-        position: fixed;
-        right: 0;
-        bottom: 0;
         height: fit-content;
         width: fit-content;
-        margin: 0.5rem 1.5rem;
-        z-index: 98;
+        margin: 0.5rem 1.25rem;
         background: none !important;
         pointer-events: none;
     }
