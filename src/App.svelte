@@ -9,7 +9,7 @@
 
     // Components
     import Input from './components/base/Input.svelte';
-    import BookmarkWidget from './components/BookmarkWidget.svelte';
+    import BookmarkCard from './components/BookmarkCard.svelte';
     import AddBookmarkDialog from './components/AddBookmarkDialog.svelte';
     import Alerts from './components/base/alerts/Alerts.svelte';
     import { Alert, AlertTypes } from './components/base/types';
@@ -17,7 +17,7 @@
 
     import type { Bookmark, NewChapter } from './library/types';
     import { getBookmarks, getNewChapters, addBookmark } from './library/library';
-    import { checkChapter, checkNewChapters } from './library/keeper';
+    import { checkNewChapters } from './library/keeper';
 
     // Bookmark stuff.
     let view_type = 'card';
@@ -99,23 +99,7 @@
     }
 
     async function bookmarkClick(bookmark: Bookmark) {
-        try {
-            const newChap = await checkChapter(bookmark, bookmark.chapter+1);
-            if(newChap) {
-                alerter.alert({
-                    title: 'New Chapter',
-                    message: `Ch.${bookmark.chapter+1} - ${bookmark.title}`,
-                    type: AlertTypes.Info
-                });
-            }
-        } catch (error) {
-            alerter.alert({
-                title: `Failed to check new chapter.`,
-                message: `${bookmark.title}`,
-                type: AlertTypes.Error
-            });
-            console.log(error);
-        }
+        
     }
 
     function check() {
@@ -178,9 +162,9 @@
     {#if bookmarks.length > 0}
         <div bind:this={bookmarksElem} class="bookmarks">
             {#each bookmarks as bookmark}
-                <BookmarkWidget type={view_type} backup_img="./assets/Magic-Scroll.png" {bookmark}
+                <BookmarkCard type={view_type} backup_img="./assets/Magic-Scroll.png" {bookmark}
                     class={(newBookmarks.some(newMark => newMark.bookmark_id === bookmark._id))? 'new':''}
-                    on:dblclick={async () => await bookmarkClick(bookmark) }
+                    on:click={async () => await bookmarkClick(bookmark) }
                 />
             {/each}
         </div>
@@ -270,6 +254,6 @@
     }
 
     :global(.bookmark.new) {
-        box-shadow: 0px 0px 5px 1px yellow !important;
+        box-shadow: 0px 0px 5px 3px yellow !important;
     }
 </style>
