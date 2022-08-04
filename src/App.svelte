@@ -19,6 +19,7 @@
     import type { Bookmark, NewChapter } from './library/types';
     import { getBookmarks, getNewChapters, addBookmark } from './library/library';
     import { checkNewChapters } from './library/keeper';
+    import Movable from './components/base/Movable.svelte';
 
     let alerter: Alerts;
 
@@ -103,7 +104,6 @@
 
     async function bookmarkClick(bookmark: Bookmark) {
         currentReading = bookmark;
-        widgetOpen = true;
     }
 
     function check() {
@@ -174,7 +174,6 @@
         </div>
     {/if}
     <div class="overlay">
-        <BookmarkWidget bookmark={currentReading} backup_img="./assets/Magic-Scroll.png" bind:open={widgetOpen}></BookmarkWidget>
         <FloatingButtons>
             <svelte:fragment slot="options">
                 <button on:click={scrollToTop}>^</button>
@@ -188,6 +187,9 @@
             </svelte:fragment>
         </FloatingButtons>
     </div>
+    <Movable>
+        <BookmarkWidget slot="element" bookmark={currentReading} backup_img="./assets/Magic-Scroll.png" bind:open={widgetOpen}></BookmarkWidget>
+    </Movable>
 </main>
 
 <style>

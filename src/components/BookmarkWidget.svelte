@@ -11,7 +11,7 @@
 
 {#key bookmark}
     <div class="widget" class:empty={!bookmark} class:closed={bookmark && !open}>
-        <div class="banner" on:click={() => { if(bookmark && !open) open = true; }}>
+        <div class="banner">
             {#if bookmark}
                 <Image alt={bookmark.title} src={bookmark.imgUrl} backup={backup_img}/>
                 <div class="vignette"></div>
@@ -26,19 +26,25 @@
                 </Scroller>
             </div>
         </div>
-        {#if bookmark && open}
-            <div class="content">
-                <div class="chapter-actions">
-                    <div class="action">
-                        <button on:click={() => { openChapter(bookmark.url, bookmark.chapter); }}>Current: {bookmark.chapter}</button>
-                    </div>
-                    <div class="action">
-                        <button>Next: N/A</button>
+        {#if bookmark}
+            {#if open}
+                <div class="content">
+                    <div class="chapter-actions">
+                        <div class="action">
+                            <button on:click={() => { openChapter(bookmark.url, bookmark.chapter); }}>Current: {bookmark.chapter}</button>
+                        </div>
+                        <div class="action">
+                            <button>Next: N/A</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="minimize" on:click={() => { open = false; }}>
-                <svg xmlns="http://www.w3.org/2000/svg" height="100%" width="100%" viewBox="0 0 48 48"><path d="M10 25.5v-3h28v3Z"/></svg>
+            {/if}
+            <div class="minimize" on:click={() => { open = !open; }}>
+                {#if open}
+                    <svg xmlns="http://www.w3.org/2000/svg" height="100%" width="100%" viewBox="0 0 48 48"><path d="M10 25.5v-3h28v3Z"/></svg>
+                {:else}
+                    <svg xmlns="http://www.w3.org/2000/svg" height="100%" width="100%" viewBox="0 0 48 48"><path d="M22.5 38V25.5H10v-3h12.5V10h3v12.5H38v3H25.5V38Z"/></svg>
+                {/if}
             </div>
         {/if}
     </div>
@@ -48,22 +54,17 @@
     .widget {
         position: relative;
         width: 20rem;
-        background-color: #0c0c0c;
+        background-color: black;
         pointer-events: auto;
         border-radius: 10px;
-        margin: .75rem 0;
         display: flex;
         flex-direction: column;
-        border: 1px solid #0c0c0c;
+        border: 1px solid black;
     }
 
     .widget.closed .banner, .widget.empty .banner {
         height: 3em;
         border-radius: 10px;
-    }
-
-    .widget.closed:not(.empty) .banner {
-        cursor: pointer;
     }
 
     .banner {
@@ -142,7 +143,7 @@
     .minimize {
         position: absolute;
         top: 0;
-        right: 0.5em;
+        right: 0;
         height: 1.5em;
         width: 1.5em;
         background: none;
