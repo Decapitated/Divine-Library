@@ -188,7 +188,11 @@
         </FloatingButtons>
     </div>
     <Movable>
-        <BookmarkWidget slot="element" bookmark={currentReading} backup_img="./assets/Magic-Scroll.png" bind:open={widgetOpen}></BookmarkWidget>
+        <BookmarkWidget slot="element"
+            bookmark={currentReading}
+            backup_img="./assets/Magic-Scroll.png"
+            newChapter={newBookmarks.find((newB) => currentReading && newB.bookmark_id == currentReading._id)}
+            bind:open={widgetOpen}></BookmarkWidget>
     </Movable>
 </main>
 

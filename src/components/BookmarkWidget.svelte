@@ -2,10 +2,11 @@
     import Image from "./base/Image.svelte";
     import Scroller from "./base/Scroller.svelte";
     import { openChapter } from "./../library/library";
-    import type { Bookmark } from "./../library/types";
+    import type { Bookmark, NewChapter } from "./../library/types";
 
     export let bookmark: Bookmark;
     export let backup_img = '';
+    export let newChapter: NewChapter;
     export let open: boolean;
 </script>
 
@@ -31,11 +32,21 @@
                 <div class="content">
                     <div class="chapter-actions">
                         <div class="action">
-                            <button on:click={() => { openChapter(bookmark.url, bookmark.chapter); }}>Current: {bookmark.chapter}</button>
+                            <button on:click={() => {
+                                openChapter(bookmark.url, bookmark.chapter);
+                            }}>
+                                Current: {bookmark.chapter}
+                            </button>
                         </div>
-                        <div class="action">
+                        {#if newChapter && newChapter.bookmark_id == bookmark._id}
+                            <button on:click={() => {
+                                openChapter(bookmark.url, newChapter.chapter);
+                            }}>
+                                Next: {newChapter.chapter}
+                            </button>
+                        {:else}
                             <button>Next: N/A</button>
-                        </div>
+                        {/if}
                     </div>
                 </div>
             {/if}
