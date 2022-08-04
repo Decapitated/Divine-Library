@@ -1,6 +1,6 @@
 import { addNewChapter, getBookmarks, getNewChapters } from './library';
 import type { Bookmark, NewChapter, Source } from './types';
-import { parseChapterUrl } from './utilities';
+import { parseChapterUrl, sourceToBaseURL } from './utilities';
 
 function GET(url: string): Promise<XMLHttpRequest> {
     return new Promise((resolve, reject) => {
@@ -23,10 +23,6 @@ function GET(url: string): Promise<XMLHttpRequest> {
         // Send request.
         xmlHttp.send(null);
     });
-}
-
-export function sourceToBaseURL(source: Source, chapter: number) {
-    return source.website + source.page + source.format + String(chapter).padStart(source.pad, '0');
 }
 
 const knownStrings = [

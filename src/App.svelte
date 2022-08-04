@@ -101,7 +101,7 @@
     }
 
     async function bookmarkClick(bookmark: Bookmark) {
-        
+        currentReading = bookmark;
     }
 
     function check() {
@@ -141,21 +141,21 @@
 </div>
 <div class="bookmark-bar">
     <!-- Left -->
-    <div>
+    <div class="left">
         <select bind:value={view_type}>
             <option value="card" selected>Card</option>
             <option value="list" selected>List</option>
         </select>
     </div>
     <!-- Center -->
-    <div>
+    <div class="center">
         <Input placeholder="Search"
             bind:value={search_value}
             on:change={(e) => console.log('App Change', e)}
             on:input={(e) => console.log('App Input', e)}></Input>
     </div>
     <!-- Right -->
-    <div>
+    <div class="right">
         <button on:dblclick={check}>Check</button>
     </div>
 </div>
@@ -172,16 +172,18 @@
         </div>
     {/if}
     <div class="overlay">
-        <BookmarkWidget bookmark={currentReading} backup_img="./assets/Magic-Scroll.png"></BookmarkWidget>
+        {#key currentReading}
+            <BookmarkWidget bookmark={currentReading} backup_img="./assets/Magic-Scroll.png"></BookmarkWidget>
+        {/key}
         <FloatingButtons>
             <svelte:fragment slot="options">
                 <button on:click={scrollToTop}>^</button>
             </svelte:fragment>
             <svelte:fragment slot="toggle-text" let:toggled>
                 {#if !toggled}
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M12 22q-2.075 0-3.9-.788-1.825-.787-3.175-2.137-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175 1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138 1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175-1.35 1.35-3.175 2.137Q14.075 22 12 22Zm0-2q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4 8.65 4 6.325 6.325 4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50%" width="50%" viewBox="0 0 24 24"><path d="M12 22q-2.075 0-3.9-.788-1.825-.787-3.175-2.137-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175 1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138 1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175-1.35 1.35-3.175 2.137Q14.075 22 12 22Zm0-2q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4 8.65 4 6.325 6.325 4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z"/></svg>
                 {:else}
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M12 17q2.075 0 3.538-1.463Q17 14.075 17 12t-1.462-3.538Q14.075 7 12 7 9.925 7 8.463 8.462 7 9.925 7 12q0 2.075 1.463 3.537Q9.925 17 12 17Zm0 5q-2.075 0-3.9-.788-1.825-.787-3.175-2.137-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175 1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138 1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175-1.35 1.35-3.175 2.137Q14.075 22 12 22Zm0-2q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4 8.65 4 6.325 6.325 4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50%" width="50%" viewBox="0 0 24 24"><path d="M12 17q2.075 0 3.538-1.463Q17 14.075 17 12t-1.462-3.538Q14.075 7 12 7 9.925 7 8.463 8.462 7 9.925 7 12q0 2.075 1.463 3.537Q9.925 17 12 17Zm0 5q-2.075 0-3.9-.788-1.825-.787-3.175-2.137-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175 1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138 1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175-1.35 1.35-3.175 2.137Q14.075 22 12 22Zm0-2q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4 8.65 4 6.325 6.325 4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z"/></svg>
                 {/if}
             </svelte:fragment>
         </FloatingButtons>
@@ -189,7 +191,7 @@
 </main>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;700&display=swap');
 
     :root {
         font-family: 'Oswald', sans-serif;
@@ -239,6 +241,10 @@
 
     .bookmark-bar > :last-child{
         justify-content: flex-end;
+    }
+
+    .bookmark-bar :global(input) {
+        margin-bottom: 0.5rem;
     }
 
     main {
@@ -297,5 +303,30 @@
 
         background: none;
         pointer-events: none;
+    }
+
+    :global(button) {
+        --bg-color: 255, 255, 255;
+        --color: 0, 0, 0;
+        border: 1px solid transparent;
+        background: none;
+        border-radius: 5px;
+        color: rgb(var(--bg-color));
+        padding: 0.25rem 0.5rem;
+        margin: 0.25rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+    }
+
+    :global(button:hover, button:active) {
+        border: 1px solid rgb(var(--bg-color));
+        background-color: rgb(var(--bg-color));
+        color: rgb(var(--color));
+    }
+
+    :global(button:active) {
+        filter: invert(1);
+        box-shadow: 0px 0px 0px 3px rgba(var(--bg-color), 0.5);
     }
 </style>

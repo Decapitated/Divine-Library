@@ -1,5 +1,6 @@
 import db from './database';
-import type { Bookmark, NewChapter } from './types';
+import type { Bookmark, NewChapter, Source } from './types';
+import { openUrl, sourceToBaseURL } from './utilities';
 
 // Gets all the bookmarks.
 export function getBookmarks(): Promise<Bookmark[]> {
@@ -58,10 +59,10 @@ export function deleteBookmark(bookmark_id: string): Promise<number> {
         );
     });
 }
-
-// Send url to electron to open browser.
-export function openUrl(url: String) {
-    nw.Shell.openExternal(url);
+export function openChapter(source: Source, chapter: number) {
+    // Open bookmark
+    let url = 'https://' + sourceToBaseURL(source, chapter);
+    openUrl(url);
 }
 
 export function getNewChapters(): Promise<NewChapter[]> {

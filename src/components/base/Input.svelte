@@ -23,7 +23,8 @@
         z-index: 2;
         background-color: inherit;
         border-radius: 0.5rem;
-        margin: 0.5rem 0;
+        margin: 0.5rem 0 0;
+        font-weight: lighter;
     }
 
     .input > input {
