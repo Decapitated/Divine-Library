@@ -6,45 +6,64 @@
 
     export let bookmark: Bookmark;
     export let backup_img = '';
-
-    let open = !!bookmark; // Convert bookmark to boolean.
-    console.log(open);
+    export let open: boolean;
 </script>
 
-{#if bookmark}
-    <div class="widget" class:open>
-        <div class="banner">
-            <div class="vignette"></div>
-            <Image alt={bookmark.title} src={bookmark.imgUrl} backup={backup_img}/>
-        </div>
-        <div class="content">
+{#key bookmark}
+    <div class="widget" class:empty={!bookmark} class:closed={bookmark && !open}>
+        <div class="banner" on:click={() => { if(bookmark && !open) open = true; }}>
+            {#if bookmark}
+                <Image alt={bookmark.title} src={bookmark.imgUrl} backup={backup_img}/>
+                <div class="vignette"></div>
+            {/if}
             <div class="title">
-                <Scroller speed={10} wait={2000}>{bookmark.title}</Scroller>
-            </div>
-            <div class="chapter-actions">
-                <div class="action">
-                    <button on:click={() => { openChapter(bookmark.url, bookmark.chapter); }}>Current: {bookmark.chapter}</button>
-                </div>
-                <div class="action">
-                    <button>Next: N/A</button>
-                </div>
+                <Scroller speed={10} wait={2000}>
+                    {#if bookmark}
+                        {bookmark.title}
+                    {:else}
+                        Select a bookmark to start reading.
+                    {/if}
+                </Scroller>
             </div>
         </div>
+        {#if bookmark && open}
+            <div class="content">
+                <div class="chapter-actions">
+                    <div class="action">
+                        <button on:click={() => { openChapter(bookmark.url, bookmark.chapter); }}>Current: {bookmark.chapter}</button>
+                    </div>
+                    <div class="action">
+                        <button>Next: N/A</button>
+                    </div>
+                </div>
+            </div>
+            <div class="minimize" on:click={() => { open = false; }}>
+                <svg xmlns="http://www.w3.org/2000/svg" height="100%" width="100%" viewBox="0 0 48 48"><path d="M10 25.5v-3h28v3Z"/></svg>
+            </div>
+        {/if}
     </div>
-{/if}
-
+{/key}
 
 <style>
     .widget {
+        position: relative;
         width: 20rem;
-        height: 20rem;
         background-color: #0c0c0c;
         pointer-events: auto;
         border-radius: 10px;
-        margin: 0.5rem;
+        margin: .75rem 0;
         display: flex;
         flex-direction: column;
         border: 1px solid #0c0c0c;
+    }
+
+    .widget.closed .banner, .widget.empty .banner {
+        height: 3em;
+        border-radius: 10px;
+    }
+
+    .widget.closed:not(.empty) .banner {
+        cursor: pointer;
     }
 
     .banner {
@@ -55,14 +74,33 @@
         border-top-right-radius: 10px;
     }
 
+    .title {
+        background: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 2rem;
+    }
+
+    .title :global(.scroller > div) {
+        text-shadow: -1px 1px 0 #000,
+                      1px 1px 0 #000,
+                      1px -1px 0 #000,
+                     -1px -1px 0 #000;
+    }
+
     .banner > .vignette {
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0;
-        z-index: 2;
-        background: radial-gradient(circle,transparent 0%,black 200%);
+        background: radial-gradient(circle,transparent 50%,black 110%);
     }
 
     .banner > :global(img) {
@@ -79,28 +117,12 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
         background: none;
-        z-index: 2;
+        padding: 0.5rem;
     }
 
-    .title {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 5em;
-        margin-top: -5em;
-        padding: 0 2rem;
-        border-radius: 5px;
-        box-shadow: 0px 0px 5px 1px black;
-    }
-
-    .title :global(.scroller > div) {
-        text-shadow: -1px 1px 0 #000,
-                      1px 1px 0 #000,
-                      1px -1px 0 #000,
-                     -1px -1px 0 #000;
+    .content > *:not(:last-child) {
+        margin-bottom: 0.5rem;
     }
 
     .chapter-actions {
@@ -108,16 +130,29 @@
         justify-content: space-around;
     }
 
-    .action {
+    .chapter-actions .action {
         display: flex;
         margin: 0 1rem;
     }
 
-    .action button {
+    .chapter-actions .action button {
         white-space: nowrap;
     }
 
-    .content > * {
-        margin-bottom: 0.5rem;
+    .minimize {
+        position: absolute;
+        top: 0;
+        right: 0.5em;
+        height: 1.5em;
+        width: 1.5em;
+        background: none;
+        fill: white;
+        border-radius: 100%;
+        cursor: pointer;
+        transition: fill 0.2s;
+    }
+
+    .minimize:hover {
+        filter: brightness(0.5);
     }
 </style>

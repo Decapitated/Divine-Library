@@ -27,6 +27,7 @@
     let bookmarks: Bookmark[] = [];
     let newBookmarks: NewChapter[] = [];
     let currentReading: Bookmark;
+    let widgetOpen = false;
 
     // Dialog stuff.
     let addDialog: AddBookmarkDialog;
@@ -102,6 +103,7 @@
 
     async function bookmarkClick(bookmark: Bookmark) {
         currentReading = bookmark;
+        widgetOpen = true;
     }
 
     function check() {
@@ -172,9 +174,7 @@
         </div>
     {/if}
     <div class="overlay">
-        {#key currentReading}
-            <BookmarkWidget bookmark={currentReading} backup_img="./assets/Magic-Scroll.png"></BookmarkWidget>
-        {/key}
+        <BookmarkWidget bookmark={currentReading} backup_img="./assets/Magic-Scroll.png" bind:open={widgetOpen}></BookmarkWidget>
         <FloatingButtons>
             <svelte:fragment slot="options">
                 <button on:click={scrollToTop}>^</button>
