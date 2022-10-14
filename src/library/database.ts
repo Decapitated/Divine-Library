@@ -27,8 +27,9 @@ db.new = new nedb({
     filename:  DATA_PATH + 'new.db',
     autoload: true });
 
+/* Testing setting _id manually.
 db.new.ensureIndex({ fieldName: 'bookmark_id', unique: true }, function (e) {
     if(e !== null) console.log("Failed to ensure index.", e.message);
-});
+}); */
 
 export default db;

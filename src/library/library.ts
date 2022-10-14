@@ -1,3 +1,9 @@
+/**
+ * The "Library" contains funtionality pertaining to "Books", like:
+ *     + Retrieving/Adding/Editing/Deleting bookmarks.
+ *     + ^-- for unread chapters.
+ */
+
 import db from './database';
 import type { Bookmark, NewChapter, Source } from './types';
 import { openUrl, sourceToBaseURL } from './utilities';
@@ -21,10 +27,10 @@ export function addBookmark(bookmark: Bookmark): Promise<Bookmark> {
 }
 
 // Edits a bookmark.
-export function editBookmark(id: string, bookmark: Bookmark): Promise<Bookmark> {
+export function editBookmark(bookmark: Bookmark): Promise<Bookmark> {
     return new Promise((resolve, reject) => {
         db.bookmarks.update(
-            {_id: id},                             // Match id.
+            {_id: bookmark._id},                   // Match id.
             bookmark,                              // Data for update.
             {returnUpdatedDocs: true},             // Additional options.
             (e, _numAffected, updatedBookmark, _upsert) => { // Callback.
@@ -86,9 +92,9 @@ export function addNewChapter(newChapter: NewChapter): Promise<NewChapter> {
 export function updateNewChapter(bookmark_id: string, chapter: number): Promise<NewChapter> {
     return new Promise((resolve, reject) => {
         db.new.update(
-            {bookmark_id: bookmark_id},           // Match id.
-            {bookmark_id: bookmark_id, chapter: chapter}, // Data for update.
-            {returnUpdatedDocs: true},            // Additional options.
+            {_id: bookmark_id},                              // Match id.
+            {chapter: chapter},                              // Data for update.
+            {returnUpdatedDocs: true},                       // Additional options.
             (e, _numAffected, updatedBookmark, _upsert) => { // Callback.
                 e ? reject(e) : resolve(updatedBookmark);
             }
@@ -99,9 +105,9 @@ export function updateNewChapter(bookmark_id: string, chapter: number): Promise<
 export function deleteNewChapter(bookmark_id: string): Promise<number> {
     return new Promise((resolve, reject) => {
         db.new.remove(
-            {bookmark_id: bookmark_id},  // Match id.
-            {},                  // Additional options.
-            (e, numRemoved) => { // Callback.
+            {_id: bookmark_id},         // Match id.
+            {},                         // Additional options.
+            (e, numRemoved) => {        // Callback.
                 e ? reject(e) : resolve(numRemoved);
             }
         );

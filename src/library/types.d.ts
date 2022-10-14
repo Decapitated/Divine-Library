@@ -15,6 +15,5 @@ export type Bookmark = {
 
 export type NewChapter = {
     _id: string;
-    bookmark_id: string;
     chapter: number;
 };

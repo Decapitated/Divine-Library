@@ -51,8 +51,8 @@
 
     function sortBookmarks(bParam: Bookmark[]) {
         return bParam.sort((a, b) => {
-            let aNew = newBookmarks.some((newMark) => newMark.bookmark_id === a._id);
-            let bNew = newBookmarks.some((newMark) => newMark.bookmark_id === b._id);
+            let aNew = newBookmarks.some((newMark) => newMark._id === a._id);
+            let bNew = newBookmarks.some((newMark) => newMark._id === b._id);
             if(aNew && !bNew) return -1;
             if(!aNew && bNew) return 1;
             return a.title.localeCompare(b.title);
@@ -167,7 +167,7 @@
         <div bind:this={bookmarksElem} class="bookmarks">
             {#each bookmarks as bookmark}
                 <BookmarkCard type={view_type} backup_img="./assets/Magic-Scroll.png" {bookmark}
-                    class={(newBookmarks.some(newMark => newMark.bookmark_id === bookmark._id))? 'new':''}
+                    class={(newBookmarks.some(newMark => newMark._id === bookmark._id))? 'new':''}
                     on:click={async () => await bookmarkClick(bookmark) }
                 />
             {/each}
@@ -191,7 +191,7 @@
         <BookmarkWidget slot="element"
             bookmark={currentReading}
             backup_img="./assets/Magic-Scroll.png"
-            newChapter={newBookmarks.find((newB) => currentReading && newB.bookmark_id == currentReading._id)}
+            newChapter={newBookmarks.find((newB) => currentReading && newB._id == currentReading._id)}
             bind:open={widgetOpen}></BookmarkWidget>
     </Movable>
 </main>

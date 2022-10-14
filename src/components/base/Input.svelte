@@ -8,7 +8,9 @@
 </script>
 
 <div class="input">
-    <input id="input" class:valid = { value != null && value.length > 0 } bind:value
+    <input id="input"
+        class:valid = { value != null && value.length > 0 }
+        bind:value
         on:change={(e) => dispatch("change", e.target.value)}
         on:input={(e) => dispatch("input", e.target.value)}>
     <label for="input">{ placeholder }</label>
@@ -38,6 +40,7 @@
         --border-color: var(--grey);
 
         border: 1px solid rgb(var(--border-color));
+        border-width: 2px;
         outline: none;
         border-radius: 0.5rem;
         background-color: inherit;
@@ -61,8 +64,7 @@
         padding: 0 0.25rem;
     }
 
-    input:focus, input:focus-visible, input:valid {
+    input:focus, input:focus-visible, input.valid {
         --border-color: var(--blue);
-        border-width: 2px;
     }
 </style>

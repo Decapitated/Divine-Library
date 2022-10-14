@@ -1,3 +1,7 @@
+/**
+ * The "Keeper" contains funtionality pertaining to the "Library" like:
+ *     + Checking for new chapters and updating the "Library".
+ */
 import { addNewChapter, getBookmarks, getNewChapters } from './library';
 import type { Bookmark, NewChapter, Source } from './types';
 import { parseChapterUrl, sourceToBaseURL } from './utilities';
@@ -63,13 +67,13 @@ export async function checkNewChapters(checkAll = false) {
             const nextBookmark = bookmarkIterator.next(); // Get next entry from iterator.
             if(!nextBookmark.done) {                      // Check if iterator is done.
                 const bookmark: Bookmark = nextBookmark.value;
-                if(!checkAll && newChapters.some(newChap => newChap.bookmark_id === bookmark._id)) return;
+                if(!checkAll && newChapters.some(newChap => newChap._id === bookmark._id)) return;
                 checkChapter(bookmark, bookmark.chapter + 1)
                     .then(async (result) => {
                         if(result) { // Update unread.
                             try {
                                 await addNewChapter({
-                                    bookmark_id: bookmark._id,
+                                    _id: bookmark._id,
                                     chapter: bookmark.chapter + 1
                                 } as NewChapter);
                             } catch (error) { }

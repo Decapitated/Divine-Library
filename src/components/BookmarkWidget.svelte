@@ -1,13 +1,39 @@
 <script lang="ts">
     import Image from "./base/Image.svelte";
     import Scroller from "./base/Scroller.svelte";
+    import Input from "./base/Input.svelte";
     import { openChapter } from "./../library/library";
     import type { Bookmark, NewChapter } from "./../library/types";
+    import { sourceToBaseURL } from "./../library/utilities";
 
     export let bookmark: Bookmark;
     export let backup_img = '';
     export let newChapter: NewChapter;
     export let open: boolean;
+    let edited = {
+        title: null,
+        chapter: null,
+        url: null,
+        imgUrl: null
+    };
+    $: {
+        if(bookmark) {
+            edited = {
+                title: bookmark.title,
+                chapter: `${bookmark.chapter}`,
+                url: sourceToBaseURL(bookmark.url, bookmark.chapter),
+                imgUrl: bookmark.imgUrl
+            }
+        }
+    };
+
+    function isEdited() {
+        if(bookmark.title != edited.title ||
+           `${bookmark.chapter}` != edited.chapter ||
+           sourceToBaseURL(bookmark.url, bookmark.chapter) != edited.url ||
+           bookmark.imgUrl != edited.imgUrl) return true;
+        return false;
+    }
 </script>
 
 {#key bookmark}
@@ -38,7 +64,7 @@
                                 Current: {bookmark.chapter}
                             </button>
                         </div>
-                        {#if newChapter && newChapter.bookmark_id == bookmark._id}
+                        {#if newChapter && newChapter._id == bookmark._id}
                             <button on:click={() => {
                                 openChapter(bookmark.url, newChapter.chapter);
                             }}>
@@ -48,8 +74,15 @@
                             <button>Next: N/A</button>
                         {/if}
                     </div>
+                    <div class="field-inputs">
+                        <Input placeholder="Title" bind:value={edited.title}></Input>
+                        <Input placeholder="Chapter" bind:value={edited.chapter}></Input>
+                        <Input placeholder="Url" bind:value={edited.url}></Input>
+                        <Input placeholder="Image Url" bind:value={edited.imgUrl}></Input>
+                    </div>
                 </div>
             {/if}
+            <!--Maximize/Minimize button.-->
             <div class="minimize" on:click={() => { open = !open; }}>
                 {#if open}
                     <svg xmlns="http://www.w3.org/2000/svg" height="100%" width="100%" viewBox="0 0 48 48"><path d="M10 25.5v-3h28v3Z"/></svg>
