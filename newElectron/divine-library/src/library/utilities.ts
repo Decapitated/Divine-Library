@@ -37,8 +37,3 @@ export function parseChapterUrl(url: string): ParsedUrl|null {
 export function sourceToBaseURL(source: Source, chapter: number) {
     return source.website + source.page + source.format + String(chapter).padStart(source.pad, '0');
 }
-
-// Send url to electron to open browser.
-export function openUrl(url: String) {
-    nw.Shell.openExternal(url);
-}

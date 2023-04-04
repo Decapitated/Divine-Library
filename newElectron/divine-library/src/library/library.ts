@@ -6,12 +6,22 @@
 
 import db from './database';
 import type { Bookmark, NewChapter, Source } from './types';
-import { openUrl, sourceToBaseURL } from './utilities';
+import { sourceToBaseURL } from './utilities';
 
 // Gets all the bookmarks.
 export function getBookmarks(): Promise<Bookmark[]> {
     return new Promise((resolve, reject) => {
         db.bookmarks.find({}, (e, bookmarks) => {
+            e ? reject(e) : resolve(bookmarks);
+        });
+    });
+}
+
+export function getBookmarksPage(page: number, limit: number): Promise<Bookmark[]> {
+    return new Promise((resolve, reject) => {
+        if(page < 1) reject("Page is lower than 1.");
+        if(limit < 1) reject("Limit is lower than 1.");
+        db.bookmarks.find({}).skip((page - 1) * limit).limit(limit).exec((e, bookmarks) => {
             e ? reject(e) : resolve(bookmarks);
         });
     });

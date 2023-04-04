@@ -4,12 +4,13 @@
  */
 const nedb = require('nedb');
 import type Datastore from 'nedb'
+import { Bookmark, NewChapter } from './types';
 // Folder name to store datastores.
 const DATA_PATH = 'datastores/';
 
 export type Databases = {
-    bookmarks: Datastore;
-    new: Datastore;
+    bookmarks: Datastore<Bookmark>;
+    new: Datastore<NewChapter>;
 };
 
 const db = {} as Databases;
