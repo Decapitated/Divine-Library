@@ -1,4 +1,4 @@
-import { createRef, useState, useEffect, Fragment } from 'react';
+import { createRef } from 'react';
 import './Scroller.css';
 import React from 'react';
 
@@ -51,12 +51,13 @@ function Scroller(props: PropType) {
     }
 
     return(
-    <div className="scroller"
-        ref={scrollerRef}
-        onMouseEnter={enter}
-        onMouseLeave={leave}>
-            <div ref={innerRef}>{props.children}</div>
-    </div>);
+        <div className="scroller"
+            ref={scrollerRef}
+            onMouseEnter={enter}
+            onMouseLeave={leave}>
+                <div ref={innerRef}>{props.children}</div>
+        </div>
+    );
 }
 
 export default Scroller;
