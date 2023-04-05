@@ -1,0 +1,8 @@
+.scroller {
+    overflow-x: hidden;
+}
+
+.scroller > div {
+    white-space: nowrap;
+    width: fit-content;
+}

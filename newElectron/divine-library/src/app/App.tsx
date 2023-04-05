@@ -1,14 +1,8 @@
 import React from 'react';
 import { useState, useEffect, Fragment } from 'react';
-//import { Component, createRef, Fragment } from 'react';
 
 import type { Bookmark, NewChapter } from '../library/types';
-
-interface AppState {
-    //datasetPath: string;
-    newBookmarks: NewChapter[];
-    bookmarks: Bookmark[];
-}
+import Scroller from './components/Scroller/Scroller';
 
 function App() {
     const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
@@ -21,7 +15,6 @@ function App() {
     async function refresh() {
         window.electronAPI.getBookmarks().then((bookmarks) => {
             if(bookmarks && bookmarks.length > 0) {
-                console.log(bookmarks);
                 setBookmarks(sortBookmarks(bookmarks));
             }
         });
@@ -37,12 +30,14 @@ function App() {
         });
     }
 
+    // Render stuff here.
     const listMarks = bookmarks.map((bookmark, index) => 
-        <p key={index}>
+        <Scroller key={index} speed={10} wait={2000}>
             {bookmark.title}
-        </p>
+        </Scroller>
     );
-    return(<Fragment>
+    return(
+    <Fragment>
         <h1>Hello World! :|</h1>
         <p>
             Why do I do this to myself? Re-Building this all over again.
